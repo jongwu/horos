@@ -8,12 +8,6 @@ mov ax, cs
 mov ds, ax
 mov es, ax
 call DispStr
-mov ax, 0xb800
-mov es, ax
-mov si, data
-mov di, 2000
-mov cx, 14
-rep movsb
 jmp $
 DispStr:
 	mov ax, BootMessage
