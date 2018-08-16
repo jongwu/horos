@@ -27,6 +27,7 @@ gdtr:
 	dq gdt32
 
 gdt32:
+	dq 0
 	; code segment
 	dw 0xffff ; limit
 	dw 0x00; base
