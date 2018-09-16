@@ -1,3 +1,4 @@
+set -e
 make -C boot/
 make -C init/
 dd if=boot/boot.bin of=c.img bs=512 count=1 conv=notrunc

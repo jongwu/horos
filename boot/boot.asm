@@ -1,81 +1,28 @@
          ;filename: boot.asm
          ;descriptor: using as bootloader, setup GDT, loader setup.asm and kernel
          ;build time: 2018-9-15          
+
+	org 0x7c00
+	setup_base_address	equ	0x000009000 
+	head_base_address	equ	0x00000a000
+	setup_sector	        equ	1
+	head_sector	        equ	9
          
-	 setup_base_address equ  0x00009000 
-	 head_base_address equ 0x00000a000
-	 setup_sector equ 1
-	 head_sector equ 9
-         
-         mov ax,cs      
-         mov ss,ax
-         mov sp,0x7c00
-      
-         ; setup GDT
-	 ; comput gdt segment address 
-         mov eax,[cs:pgdt+0x7c00+0x02]      ;GDT address
-         xor edx,edx
-         mov ebx,16
-         div ebx                             
+	mov ax, 0x7c00      
+	mov ss,ax
+        mov sp,0
+	;get memory size from BIOS int 15
+	mov eax, 0
+	mov ds, eax
+	jmp get_mem_size
 
-         mov ds,eax                         ;DS point to the gdt address
-         mov ebx,edx                        ;ebx is start offset 
-
-         ;skip #0 descriptor
-         ;build #1 descriptor,this is data descriptor,cover 0~4GB linear address
-         mov dword [ebx+0x08],0x0000ffff    ;base address is 0，segment limit is 0xFFFFF
-         mov dword [ebx+0x0c],0x00cf9200    ;D bit is 1, granularity is 4KB
-
-         ;build code segment descriptor in protect mode
-         mov dword [ebx+0x10],0x7c0001ff    ;base address is 0x00007c00，segment limit is 0x1FF 
-         mov dword [ebx+0x14],0x00409800    ;granularity is 1B
-
-         ;stack descriptor                  ;base address is 0x00007C00，segment limit is 0xFFFFE 
-         mov dword [ebx+0x18],0x7c00fffe    ;granularity is 4KB 
-         mov dword [ebx+0x1c],0x00cf9600
-         
-         ;display descriptor   
-         mov dword [ebx+0x20],0x80007fff    ;base address is 0x000B8000，segment limit is 0x07FFF 
-         mov dword [ebx+0x24],0x0040920b    ;granularity is 1B
-
-	;setup code descriptor
-	 mov dword [ebx+0x28], 0x90000800   ;base addrass is 0x9000, limit is 2kB
-	 mov dword [ebx+0x2c], 0x00409800   ;code segment 
-
-	;head code descriptor
-	 mov dword [ebx+0x30], 0xa000f000   ;base address is 1M, limit is 128KB
-	 mov dword [ebx+0x34], 0x00409800   ;code segment
-         
-         ;set descriptor limit in gdtr
-         mov word [cs: pgdt+0x7c00],55      ;descriptor limit   
-
- 	;load GDTR
-         lgdt [cs: pgdt+0x7c00]
-
-	;open a20
-         in al,0x92                          
-         or al,0000_0010B
-         out 0x92,al                        
-
-	;close peripheral interrupt
-         cli                                
-
-	;open protect mode
-         mov eax,cr0
-         or eax,1
-         mov cr0,eax                        
-      
-        ;jump to protect mode
-         jmp dword 0x0010:loader             
-
-         [bits 32]			    ;32 bit code
 
 ;loader will load setup.asm and kernel code to corresponding memory
- loader:                                  
-         mov eax,0x0008                     ;set ds
+loader:                                  
+         mov eax,0x000                    ;set ds
          mov ds,eax
       
-         mov eax,0x0018                     ;set ss 
+         mov eax,0x7c0                     ;set ss 
          mov ss,eax
          xor esp,esp                        ;set esp to 0
          
@@ -93,13 +40,13 @@ setup:   call read_hard_disk_0
 	 mov edi, head_base_address
 	 mov eax, head_sector
 	 mov ebx, edi
-	 mov ecx, 92
+	 mov ecx, 10
 read_head:
 	 call read_hard_disk_0
 	 inc eax
 	 loop read_head
 	;jmp to setup code
-	 jmp 0x28:0x000
+	 jmp  0x00:setup_base_address
 	
 
 
@@ -166,6 +113,27 @@ read_hard_disk_0:                        ;read hard disk
 	;GDTR  initial
          pgdt             dw 0
                           dd 0x00007e00      ;GDT base address
+
+;-------------------------------------------------------------------------------
+	;get memory size from BIOS int 15
+	mem_size_para_address equ 0x00009900
+get_mem_size:
+        mcr_number dd 0
+        mov ebx, 0
+        mov eax, 0x08
+        mov es, eax
+        mov di, mem_size_para_address
+.loop   mov eax, 0x0e820
+        mov ecx, 20
+        mov edx, 0x0534d4150
+        int 15h
+        jc $
+        add di, 20
+        inc dword [mcr_number+0x7c00]
+        cmp ebx, 0
+        jne .loop
+	jmp loader
+
 ;-------------------------------------------------------------------------------                             
          times 510-($-$$) db 0
                           db 0x55,0xaa
