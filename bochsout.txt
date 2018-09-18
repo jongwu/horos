@@ -32,37 +32,37 @@
 00000000000i[     ]   SB16 support: yes
 00000000000i[     ]   USB support: yes
 00000000000i[     ]   VGA extension support: vbe cirrus
-00000000000i[MEM0 ] allocated memory at 0xb4080008. after alignment, vector=0xb4081000
+00000000000i[MEM0 ] allocated memory at 0xb4107008. after alignment, vector=0xb4108000
 00000000000i[MEM0 ] 32.00MB
 00000000000i[MEM0 ] mem block size = 0x00100000, blocks=32
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('/usr/share/bochs/BIOS-bochs-latest')
-00000000000i[     ] lt_dlhandle is 0xb119df0
+00000000000i[     ] lt_dlhandle is 0x9f1edf0
 00000000000i[PLGIN] loaded plugin libbx_hdimage.so
-00000000000i[     ] lt_dlhandle is 0xb11a3a0
+00000000000i[     ] lt_dlhandle is 0x9f1f3a0
 00000000000i[PLGIN] loaded plugin libbx_pci.so
-00000000000i[     ] lt_dlhandle is 0xb11aab8
+00000000000i[     ] lt_dlhandle is 0x9f1fab8
 00000000000i[PLGIN] loaded plugin libbx_pci2isa.so
-00000000000i[     ] lt_dlhandle is 0xb11b130
+00000000000i[     ] lt_dlhandle is 0x9f20130
 00000000000i[PLGIN] loaded plugin libbx_acpi.so
-00000000000i[     ] lt_dlhandle is 0xb11b7a8
+00000000000i[     ] lt_dlhandle is 0x9f207a8
 00000000000i[PLGIN] loaded plugin libbx_cmos.so
-00000000000i[     ] lt_dlhandle is 0xb11bd78
+00000000000i[     ] lt_dlhandle is 0x9f20d78
 00000000000i[PLGIN] loaded plugin libbx_dma.so
-00000000000i[     ] lt_dlhandle is 0xb11c420
+00000000000i[     ] lt_dlhandle is 0x9f21420
 00000000000i[PLGIN] loaded plugin libbx_pic.so
-00000000000i[     ] lt_dlhandle is 0xb11c930
+00000000000i[     ] lt_dlhandle is 0x9f21930
 00000000000i[PLGIN] loaded plugin libbx_pit.so
-00000000000i[     ] lt_dlhandle is 0xb11cf98
+00000000000i[     ] lt_dlhandle is 0x9f21f98
 00000000000i[PLGIN] loaded plugin libbx_floppy.so
-00000000000i[     ] lt_dlhandle is 0xb11d7e8
+00000000000i[     ] lt_dlhandle is 0x9f227e8
 00000000000i[PLGIN] loaded plugin libbx_vga.so
-00000000000i[     ] lt_dlhandle is 0xb11dce0
+00000000000i[     ] lt_dlhandle is 0x9f22ce0
 00000000000i[PLGIN] loaded plugin libbx_ioapic.so
-00000000000i[     ] lt_dlhandle is 0xb11e2b8
+00000000000i[     ] lt_dlhandle is 0x9f232b8
 00000000000i[PLGIN] loaded plugin libbx_keyboard.so
-00000000000i[     ] lt_dlhandle is 0xb11e8e8
+00000000000i[     ] lt_dlhandle is 0x9f238e8
 00000000000i[PLGIN] loaded plugin libbx_harddrv.so
-00000000000i[     ] lt_dlhandle is 0xb1305a0
+00000000000i[     ] lt_dlhandle is 0x9f355a0
 00000000000i[PLGIN] loaded plugin libbx_pci_ide.so
 00000000000i[PLGIN] init_dev of 'pci' plugin device by virtual method
 00000000000i[PCI  ] 440FX Host bridge present at device 0, function 0
@@ -70,7 +70,7 @@
 00000000000i[PCI  ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[PLGIN] init_dev of 'cmos' plugin device by virtual method
 00000000000i[CMOS ] Using local time for initial clock
-00000000000i[CMOS ] Setting initial clock to: Sun Sep 16 23:10:21 2018 (time0=1537110621)
+00000000000i[CMOS ] Setting initial clock to: Tue Sep 18 08:24:15 2018 (time0=1537230255)
 00000000000i[PLGIN] init_dev of 'dma' plugin device by virtual method
 00000000000i[DMA  ] channel 4 used by cascade
 00000000000i[PLGIN] init_dev of 'pic' plugin device by virtual method
@@ -194,6 +194,6 @@
 00000000000i[CPU0 ] | EIP=0000fff0 (0000fff0)
 00000000000i[CPU0 ] | CR0=0x60000010 CR2=0x00000000
 00000000000i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
-00000000000i[CMOS ] Last time is 1537110621 (Sun Sep 16 23:10:21 2018)
+00000000000i[CMOS ] Last time is 1537230255 (Tue Sep 18 08:24:15 2018)
 00000000000i[XGUI ] Exit
 00000000000i[CTRL ] quit_sim called with exit code 0

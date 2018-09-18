@@ -10,7 +10,7 @@
          mov ax,cs      
          mov ss,ax
          mov sp,0x7c00
-	 call Init8259A
+;	 call Init8259A
          ; setup GDT
 	 ; comput gdt segment address 
          mov eax,[cs:pgdt+setup_base_address+0x02]      ;GDT address
