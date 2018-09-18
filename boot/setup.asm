@@ -66,9 +66,15 @@
          mov cr0,eax                        
       
         ;jump to protect mode
+	mov eax, 0x08
+	mov ds, eax
+	mov eax, 0x18
+	mov ss, eax
+	mov sp, 0
          jmp dword 0x0030:0x000             
 
          [bits 32]			    ;32 bit code
+	
 	;GDTR  initial
          pgdt             dw 0
                           dd 0x00007e00      ;GDT base address
