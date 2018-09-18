@@ -6,7 +6,7 @@ start:
 	call setup_idt
 	call write_idt
 	lidt [idtr+head_base_addr]
-	int 0
+	int 200
 	jmp $
 
 setup_idt:
@@ -29,17 +29,17 @@ write_idt:
 	
 	
 idt:
-	times 4*512-1 dd 0
+	times 512 dd 0
 
 idtr:
-	dw 15
+	dw 512*4-1
 	dd idt+head_base_addr
 
 isr:
 	mov eax, 0x20
 	mov gs, eax
 	mov ecx, 400
-	mov ebx, 400
+	mov ebx, 0
 s:
 	mov byte [gs:ebx], '+'
 	add ebx, 2
