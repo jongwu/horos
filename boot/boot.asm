@@ -4,7 +4,7 @@
 
 	org 0x7c00
 	setup_base_address	equ	0x000009000 
-	head_base_address	equ	0x00000a000
+	head_segment_address	equ	0x000000a00
 	setup_sector	        equ	1
 	head_sector	        equ	9
          
@@ -37,14 +37,18 @@ setup:   call read_hard_disk_0
 	 loop setup
 
 	;load head code from 9 to 100 in hard disk
-	 mov edi, head_base_address
+	 mov edi, 0
 	 mov eax, head_sector
 	 mov ebx, edi
-	 mov ecx, 20
+	 mov ebp, head_segment_address
+	 mov ds, ebp
+	 mov ecx, 100
 read_head:
 	 call read_hard_disk_0
 	 inc eax
 	 loop read_head
+	 mov ebp, 0
+	 mov ds, ebp
 	;jmp to setup code
 	 jmp  0x00:setup_base_address
 	
@@ -106,7 +110,7 @@ read_hard_disk_0:                        ;read hard disk
          pop edx
          pop ecx
          pop eax
-      
+ 
          ret
 
 ;-------------------------------------------------------------------------------
@@ -116,7 +120,7 @@ read_hard_disk_0:                        ;read hard disk
 
 ;-------------------------------------------------------------------------------
 	;get memory size from BIOS int 15
-	mem_size_para_address equ 0x00009900
+	mem_size_para_address equ 0x00006000
 get_mem_size:
         mcr_number dd 0
         mov ebx, 0

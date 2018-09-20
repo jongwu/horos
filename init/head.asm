@@ -1,11 +1,15 @@
 bits 32
 head_base_addr equ 0xa000
 head_segment equ 0x30
+pde_base_addr equ 0x0000
+pte_base_addr equ 0x1000
 
 start:
 	call setup_idt
 	call write_idt
 	lidt [idtr+head_base_addr]
+	call setup_pde
+	call start_paging
 	int 200
 	jmp $
 
@@ -27,13 +31,59 @@ write_idt:
 	mov dword [ebx+4], eax
 	ret
 	
-	
 idt:
 	times 512 dd 0
 
 idtr:
 	dw 512*4-1
 	dd idt+head_base_addr
+
+setup_pde:
+	mov eax, pte_base_addr
+	add eax, 0x113
+	mov ecx, 4
+	mov edx, 0
+.l1	mov [pde_base_addr+edx], eax
+	call setup_pte
+	add eax, 4*1024
+	add edx, 4
+	loop .l1
+	jmp start_paging
+
+setup_pte:
+	push eax
+	push ecx
+	push edx
+	push edi
+	mov eax, 0
+	add eax, 0x113
+	mov ecx, 1023
+	mov ebx, 0
+.l2	mov edi, edx
+	shl edi, 10
+	mov [pte_base_addr+ebx+edi], eax
+	add eax, 4*1024
+	add ebx, 4
+	loop .l2
+	pop edi
+	pop edx
+	pop ecx
+	pop eax
+	ret
+
+start_paging:
+	push eax
+	push ebx
+	mov eax, pde_base_addr
+	mov cr3, eax
+	mov eax, cr0
+	mov ebx, 1
+	shl ebx, 31
+	or  eax, ebx
+	mov cr0, eax
+	pop ebx
+	pop eax
+	ret
 
 isr:
 	mov eax, 0x20

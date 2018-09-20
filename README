@@ -1,4 +1,22 @@
-I want to develop a small os just for study and for fun.
-The name of this samll os is combination of horse and os, for I hope horos can run quickly like a horse. So if I will choose a masot for it, the horse will be preference.
-I develop horse on a i386 machine so it  will be expected to run on x86 only. But in the future, I hope horos can run on embeded device, for I think IOT will a useful future technology.
-If you are instresting with it, joining me!
+#################################################################################
+#	I want to develop a small os just for study and for fun.                 #
+#	The name of this samll os is combination of horse and os, for I hope     #
+#	horos can run quickly like a horse. So if I will choose a masot for      #
+#	it, the horse will be preference.                                        #
+#	I develop horse on a i386 machine so it  will be expected to run on      #
+#	x86 only. But in the future, I hope horos can run on embeded device,     #
+#	for I think IOT will a useful future technology.                         #
+#	If you are instresting with it, joining me!                              #
+##################################################################################
+
+Before run 
+firstly, you should make sure you have some basic tools in your linux.
+check if qemu, bochs are in your computer.
+if not, install them.
+in ubuntu, run
+$apt install -y qemu bochs bochs-x bximage
+
+Run method
+just execute run.sh in root director in in linux enviroment
+
+$sudo  ./run.sh

@@ -3,7 +3,7 @@
          ;build time: 2018-9-15          
          
 	 setup_base_address	equ	0x00009000 
-	 head_base_address	equ	0x00000a000
+	 head_base_address	equ	0x0000a000
 	 setup_sector		equ	1
 	 head_sector		equ	9
          
