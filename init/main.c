@@ -5,7 +5,7 @@ int main()
         char *str="                                              					                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ";
         int len=leng(str);
         print(str,len);
-        str="Hello, my friend. This is horos, which is a small operating system in developing. Jianyong Wu create me since July 1, 2018. If you are inteasted in me please clone me from https://github.com/jianyongwu/horos and develop me. Thank you";
+        str="Hello, my friend. This is horos. I am a small operating system in developing. Jianyong Wu create me since July 1, 2018. If you are inteasted in me please clone me from https://github.com/jianyongwu/horos and develop me. Thank you";
         len=leng(str);
         print(str,len);
         print(str,len);
