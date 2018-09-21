@@ -1,17 +1,19 @@
 bits 32
-head_base_addr equ 0xa000
+head_base_addr equ 0xb000
 head_segment equ 0x30
 pde_base_addr equ 0x0000
 pte_base_addr equ 0x1000
-
+global print
+global start
+extern main
 start:
 	call setup_idt
 	call write_idt
 	lidt [idtr+head_base_addr]
 	call setup_pde
 	call start_paging
-	int 200
-	jmp $
+;	int 200
+	jmp main
 
 setup_idt:
 	mov edi, isr
@@ -48,7 +50,7 @@ setup_pde:
 	add eax, 4*1024
 	add edx, 4
 	loop .l1
-	jmp start_paging
+	ret
 
 setup_pte:
 	push eax
@@ -90,8 +92,27 @@ isr:
 	mov gs, eax
 	mov ecx, 400
 	mov ebx, 0
+	
 s:
-	mov byte [gs:ebx], '+'
+	mov byte [gs:ebx], '='
 	add ebx, 2
 	loop s
 	jmp $
+
+print:
+	mov eax, 0x20
+        mov gs, eax
+        mov esi, 0
+        mov edi, 0
+        mov ebx, ebp
+        mov ecx, [esp + 8]
+        mov edi, [esp + 4]
+        jmp l1
+l1:
+        mov eax, [edi]
+        mov byte [gs:esi], al
+        add esi, 2
+        inc edi
+        loop l1
+	ret
+	

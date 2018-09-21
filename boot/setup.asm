@@ -43,7 +43,7 @@
 	 mov dword [ebx+0x2c], 0x00409800   ;code segment 
 
 	;head code descriptor
-	 mov dword [ebx+0x30], 0xa000f000   ;base address is 1M, limit is 128KB
+	 mov dword [ebx+0x30], 0xb000f000   ;base address is 1M, limit is 128KB
 	 mov dword [ebx+0x34], 0x00409800   ;code segment
          
          ;set descriptor limit in gdtr
@@ -71,7 +71,7 @@
 	mov eax, 0x18
 	mov ss, eax
 	mov sp, 0
-         jmp dword 0x0030:0x000             
+         jmp dword 0x0030:0x0000             
 
          [bits 32]			    ;32 bit code
 	
