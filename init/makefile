@@ -8,6 +8,6 @@ main.o: main.c
 head.o: head.asm
 	nasm -f elf  head.asm -o head.o
 
-clear:
-	rm main.o print.o kernel.bin
+clean:
+	rm main.o head.o kernel.bin
 
