@@ -47,6 +47,7 @@ start:
 	call setup_pde
 	call start_paging
 ;	int 20
+;	sti
 	jmp main
 	jmp $
 

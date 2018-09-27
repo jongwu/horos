@@ -71,7 +71,7 @@
 	mov eax, 0x18
 	mov ss, eax
 	mov sp, 0
-         jmp dword 0x0030:0x00a0             
+         jmp dword 0x0030:0x140
 
          [bits 32]			    ;32 bit code
 	
@@ -102,7 +102,7 @@ Init8259A:
 
         out     0A1h, al        ; 从8259, ICW4.
 
-        mov     al, 11111110b   ; 仅仅开启定时器中断
+        mov     al, 11111111b   ; 仅仅开启定时器中断
         ;mov    al, 11111111b   ; 屏蔽主8259所有中断
         out     021h, al        ; 主8259, OCW1.
 
