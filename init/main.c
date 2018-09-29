@@ -3,16 +3,10 @@
 #include "global.h"
 extern void print(char *msg, int len);
 int leng(char *msg);
-
 int main()
 {
-        char *str="                                              					                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ";
-        int len=leng(str);
-        print(str,len);
-        str="Hello, my friend. This is horos. I am a small operating system in developing. Jianyong Wu create me since July 1, 2018. If you are inteasted in me please clone me from https://github.com/jianyongwu/horos and develop me. Thank you\n";
-        len=leng(str);
-//        print(str,len);
-//        print(str,len);
+	clear_disp();
+        char *str="Hello, my friend. This is horos. I am a small operating system in developing. Jianyong Wu create me since July 1, 2018. If you are inteasted in me please clone me from https://github.com/jianyongwu/horos and develop me. Thank you\n";
 	disp_str(str);
 	str="now, I just begin to boot kernel, but this kernel is nothing else beside print some words\n";
 	disp_str("\n");
@@ -29,4 +23,24 @@ int leng(char *msg)
         }
         return len;
 }
+void spurious_irq(int irq)
+{
+	clear_disp();
+        disp_int(irq);
+        disp_str("\n");
+}
 
+void disp_int(int input)
+{
+	disp_str("spurious_irq called\n");
+        char* output;
+        itoa(output, input);
+        disp_str(output); 
+}
+
+void clear_disp()
+{
+        char *str="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ";
+        int len=leng(str);
+        print(str,len);
+}

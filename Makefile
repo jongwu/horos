@@ -4,7 +4,7 @@ ASM = nasm
 ASMOFLAG = -I include -o
 ASMFLAG = -f elf -I include -o
 CC = gcc
-CFLAG = -I include -c -o
+CFLAG = -I include -c -fno-builtin -fno-stack-protector -o
 LD = ld
 LDFLAG = -s -Ttext $(ENTRYOFFSET) -e $(ENTRYPOINT) 
 OBJ = lib/klib.o lib/klibc.o init/head.o init/main.o
@@ -13,7 +13,6 @@ INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/
 all: boot/boot.bin boot/setup.bin $(KERNEL)
 clean:
 	rm -r $(KERNEL)
-
 
 lib/klib.o: lib/klib.asm $(INCLUDE)
 	$(ASM) $(ASMFLAG) $@ $<

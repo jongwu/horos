@@ -6,6 +6,7 @@ pte_base_addr equ 0x1000
 global print
 global start
 extern main
+extern spurious_irq
 global  divide_error
 global  single_step_exception
 global  nmi
@@ -46,7 +47,7 @@ start:
 	lidt [idtr]
 	call setup_pde
 	call start_paging
-;	int 20
+	int 30
 ;	sti
 	jmp main
 	jmp $
@@ -150,8 +151,6 @@ l1:
         loop l1
 	ret
 
-spurious_irq:
-	jmp isr
 
 init_idt:
 	mov edi, divide_error-head_base_addr
@@ -278,7 +277,6 @@ init_idt:
 	call setup_idt
 	call write_idt
 	ret
-
 
 
 %macro	hwint_master	1
