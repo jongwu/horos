@@ -40,7 +40,7 @@ void disp_int(int input)
 
 void clear_disp()
 {
-        char *str="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ";
+        char *str="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ";
         int len=leng(str);
         print(str,len);
 }
