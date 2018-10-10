@@ -47,7 +47,7 @@ start:
 	lidt [idtr]
 	call setup_pde
 	call start_paging
-	int 30
+;	int 30
 ;	sti
 	jmp main
 	jmp $
