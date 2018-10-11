@@ -10,4 +10,4 @@ dd if=kernel.bin of=c.img seek=9 conv=notrunc
 
 #run kernel in qemu and bochs
 qemu-system-x86_64 c.img -m 1024
-#bochs -f bochsrc.bxrc
+bochs -f bochsrc.bxrc

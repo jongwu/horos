@@ -1,6 +1,7 @@
 #include "type.h"
 #include "lib.h"
 #include "global.h"
+#include "idt.h"
 extern void print(char *msg, int len);
 int leng(char *msg);
 int main()
@@ -11,6 +12,9 @@ int main()
 	str="now, I just begin to boot kernel, but this kernel is nothing else beside print some words\n";
 	disp_str("\n");
 	disp_str(str);
+	init_idt();
+	set_idtr();
+//	int_n();
         while(1);
         return 0;
 }

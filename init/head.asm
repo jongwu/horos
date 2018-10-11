@@ -39,14 +39,15 @@ global  hwint12
 global  hwint13
 global  hwint14
 global  hwint15
-
-
+extern idt
+global set_idtr
+global int_n
 start:
 	mov ebx, idt
-	call init_idt
-	lidt [idtr]
-	call setup_pde
-	call start_paging
+;	call init_idt
+;	lidt [idtr]
+;	call setup_pde
+;	call start_paging
 ;	int 30
 ;	sti
 	jmp main
@@ -67,13 +68,19 @@ write_idt:
 ;	loop write_idt
 	ret
 	
-idt:
-	times 512 dd 0
+;idt:
+;	times 512 dd 0
 
 idtr:
 	dw 512*4-1
 	dd idt
+set_idtr:
+	lidt [idtr]
+	ret
 
+int_n:
+	int 30
+	ret
 setup_pde:
 	mov eax, pte_base_addr
 	add eax, 0x113
@@ -126,12 +133,21 @@ isr:
 	mov gs, eax
 	mov ecx, 400
 	mov ebx, 0
-	
-	
 s:
 	mov byte [gs:ebx], '='
 	add ebx, 2
 	loop s
+	jmp $
+
+isr_:
+	mov eax, 0x20
+	mov gs, eax
+	mov ecx, 400
+	mov ebx, 0
+s1:
+	mov byte [gs:ebx], '+'
+	add ebx, 2
+	loop s1
 	jmp $
 
 print:
@@ -282,6 +298,7 @@ init_idt:
 %macro	hwint_master	1
 	push	%1
 	call	spurious_irq
+;	jmp isr_
 	add	esp, 4
 	hlt
 %endmacro
@@ -322,6 +339,7 @@ hwint07:		; Interrupt routine for irq 7 (printer)
 %macro	hwint_slave	1
 	push	%1
 	call	spurious_irq
+;	jmp isr_
 	add	esp, 4
 	hlt
 %endmacro
