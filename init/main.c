@@ -4,16 +4,18 @@
 #include "idt.h"
 extern void print(char *msg, int len);
 int leng(char *msg);
+void init_disp_pos();
 int main()
 {
+	init_idt();
+	set_idtr();
+	init_disp_pos();
 	clear_disp();
         char *str="Hello, my friend. This is horos. I am a small operating system in developing. Jianyong Wu create me since July 1, 2018. If you are inteasted in me please clone me from https://github.com/jianyongwu/horos and develop me. Thank you\n";
 	disp_str(str);
 	str="now, I just begin to boot kernel, but this kernel is nothing else beside print some words\n";
 	disp_str("\n");
 	disp_str(str);
-	init_idt();
-	set_idtr();
 //	int_n();
         while(1);
         return 0;
@@ -44,7 +46,7 @@ void disp_int(int input)
 
 void clear_disp()
 {
-        char *str="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ";
+        char *str="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ";
         int len=leng(str);
         print(str,len);
 }

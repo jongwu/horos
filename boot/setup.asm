@@ -73,7 +73,7 @@
 	mov sp, 0
 	mov eax, 0x20
 	mov gs, eax
-         jmp dword 0x0030:0x140
+         jmp dword 0x0030:0x150
 
          [bits 32]			    ;32 bit code
 	
