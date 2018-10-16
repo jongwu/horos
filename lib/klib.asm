@@ -16,7 +16,8 @@ global	disp_str
 global	disp_color_str
 global	out_byte
 global	in_byte
-global  init_disp_pos
+global  disp_char
+;global  init_disp_pos
 
 ; ========================================================================
 ;                  void disp_str(char * info);
@@ -119,9 +120,22 @@ in_byte:
 
 
 
-init_disp_pos:
+;init_disp_pos:
+;	push ebp
+;	mov ebp, esp
+;	mov byte [disp_pos], 0
+;	pop ebp
+;	ret
+
+disp_char:
 	push ebp
+	push eax
+	push edx
 	mov ebp, esp
-	mov byte [disp_pos], 0
+	mov eax, [ebp + 16]
+	mov edx, [eax]
+	mov byte [gs:0], al
+	pop edx
+	pop eax
 	pop ebp
 	ret

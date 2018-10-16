@@ -5,17 +5,38 @@
 extern void print(char *msg, int len);
 int leng(char *msg);
 void init_disp_pos();
+void wait();
 int main()
 {
 	init_idt();
 	set_idtr();
 	init_disp_pos();
 	clear_disp();
-        char *str="Hello, my friend. This is horos. I am a small operating system in developing. Jianyong Wu create me since July 1, 2018. If you are inteasted in me please clone me from https://github.com/jianyongwu/horos and develop me. Thank you\n";
+	char x=57;
+	for(int i=0;i<10;i++)
+	{
+		char tmp=x-i;
+		disp_char(tmp);
+		wait();
+	}
+       char *str="Hello, my friend. This is horos.\n";
 	disp_str(str);
+	wait();
+	str = "I am a small operating system in developing.\n";
+	disp_str(str);
+	wait();
+	str = "Jianyong Wu create me since July 1, 2018.\n";
+	disp_str(str);
+	wait();
+	str = "If you are inteasted in me please clone me from https://github.com/jianyongwu/horos and develop me.\n";
+	disp_str(str);
+	wait();
+	str = "Thank you\n";
+	disp_str(str);
+	wait();
 	str="now, I just begin to boot kernel, but this kernel is nothing else beside print some words\n";
 	disp_str("\n");
-	disp_str(str);
+	disp_str(str);      
 //	int_n();
         while(1);
         return 0;
@@ -49,4 +70,10 @@ void clear_disp()
         char *str="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ";
         int len=leng(str);
         print(str,len);
+}
+
+void wait()
+{
+	int i=0xffffff;
+	while(i--);
 }
