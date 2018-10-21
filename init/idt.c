@@ -3,7 +3,10 @@ void set_idt_gate(int n, unsigned int addr)
 {
 	unsigned int val_low, val_high, tmp;
 	val_low = 0x300000;
+
+	/* 0xb000 is head segment phyical address */
 	addr -= 0xb000;
+
 	tmp = 0x0000ffff & addr;
 	val_low |= tmp;
 	idt[n*2] = val_low;
@@ -30,21 +33,21 @@ void init_idt()
 	set_idt_gate(12, &stack_exception);
 	set_idt_gate(13, &general_protection);
 	set_idt_gate(14, &page_fault);
-	set_idt_gate(15, &copr_error);
-	set_idt_gate(16, &hwint00);
-	set_idt_gate(17, &hwint01);
-	set_idt_gate(18, &hwint02);
-	set_idt_gate(19, &hwint03);
-	set_idt_gate(20, &hwint04);
-	set_idt_gate(21, &hwint05);
-	set_idt_gate(22, &hwint06);
-	set_idt_gate(23, &hwint07);
-	set_idt_gate(24, &hwint08);
-	set_idt_gate(25, &hwint09);
-	set_idt_gate(26, &hwint10);
-	set_idt_gate(27, &hwint11);
-	set_idt_gate(28, &hwint12);
-	set_idt_gate(29, &hwint13);
-	set_idt_gate(30, &hwint14);
-	set_idt_gate(31, &hwint15);
+	set_idt_gate(16, &copr_error);
+	set_idt_gate(32, &hwint00);
+	set_idt_gate(33, &hwint01);
+	set_idt_gate(34, &hwint02);
+	set_idt_gate(35, &hwint03);
+	set_idt_gate(36, &hwint04);
+	set_idt_gate(37, &hwint05);
+	set_idt_gate(38, &hwint06);
+	set_idt_gate(39, &hwint07);
+	set_idt_gate(40, &hwint08);
+	set_idt_gate(41, &hwint09);
+	set_idt_gate(42, &hwint10);
+	set_idt_gate(43, &hwint11);
+	set_idt_gate(44, &hwint12);
+	set_idt_gate(45, &hwint13);
+	set_idt_gate(46, &hwint14);
+	set_idt_gate(47, &hwint15);
 }

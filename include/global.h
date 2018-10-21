@@ -6,24 +6,11 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /* EXTERN is defined as extern except in global.c */
-#ifdef	GLOBAL_VARIABLES_HERE
-#undef	EXTERN
-#define	EXTERN
+#ifdef  GLOBAL_VARIABLES_HERE
+#undef  EXTERN
+#define EXTERN
 #endif
 
-int			disp_pos;
-
-
-
-
-
-
-
-
-
-
-
-
-
+int                     disp_pos;
 
 

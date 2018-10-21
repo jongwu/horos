@@ -7,6 +7,9 @@ global print
 global start
 extern main
 extern spurious_irq
+extern disp_int
+extern scheduler
+extern keyboard
 global  divide_error
 global  single_step_exception
 global  nmi
@@ -42,8 +45,9 @@ global  hwint15
 extern idt
 global set_idtr
 global int_n
+global sti
 start:
-	mov ebx, idt
+;	mov ebx, idt
 ;	call init_idt
 ;	lidt [idtr]
 ;	call setup_pde
@@ -79,7 +83,7 @@ set_idtr:
 	ret
 
 int_n:
-	int 30
+	int 35
 	ret
 setup_pde:
 	mov eax, pte_base_addr
@@ -134,7 +138,7 @@ isr:
 	mov ecx, 400
 	mov ebx, 0
 s:
-	mov byte [gs:ebx], '='
+	mov byte [gs:ebx], '-'
 	add ebx, 2
 	loop s
 	jmp $
@@ -298,19 +302,40 @@ init_idt:
 %macro	hwint_master	1
 	push	%1
 	call	spurious_irq
-;	jmp isr_
-	add	esp, 4
-	hlt
+	mov al, 0x20
+	out 0x20, al
+	call wait_
+	add esp, 4
+	iret
 %endmacro
 
+eoi_8259_master:
+	push eax
+	mov al, 0x20
+	out 0x20, al
+	pop eax
+	ret
 
 ALIGN	16
 hwint00:		; Interrupt routine for irq 0 (the clock).
-	hwint_master	0
+	call scheduler	
+	call eoi_8259_master
+	iret
 
 ALIGN	16
 hwint01:		; Interrupt routine for irq 1 (keyboard)
-	hwint_master	1
+	push eax
+	xor eax, eax
+	in  al, 0x60
+	push eax
+;	call disp_int
+	call keyboard
+	and al, 0x7f	
+	out 0x61, al
+	call eoi_8259_master
+	pop eax
+	pop eax
+	iret
 
 ALIGN	16
 hwint02:		; Interrupt routine for irq 2 (cascade!)
@@ -341,7 +366,11 @@ hwint07:		; Interrupt routine for irq 7 (printer)
 	call	spurious_irq
 ;	jmp isr_
 	add	esp, 4
-	hlt
+	mov al, 0x20
+	out 0xa0, al
+;	jmp $
+;	jmp isr
+	ret
 %endmacro
 ; ---------------------------------
 
@@ -428,10 +457,10 @@ stack_exception:
 	jmp	exception
 general_protection:
 	push	13		; vector_no	= D
-	jmp	exception
+	call	exception
 page_fault:
 	push	14		; vector_no	= E
-	jmp	exception
+	call	exception
 copr_error:
 	push	0xFFFFFFFF	; no err code
 	push	16		; vector_no	= 10h
@@ -440,7 +469,40 @@ copr_error:
 exception:
 	call	exception_handler
 	add	esp, 4*2	; 让栈顶指向 EIP，堆栈中从顶向下依次是：EIP、CS、EFLAGS
-	hlt
+	iret
 
 exception_handler:
-	jmp isr 
+	push ebp
+	push eax
+	mov ebp, esp
+	mov eax, [ebp + 12]
+	add eax, 65
+	mov byte [gs:0], al
+	pop eax
+	pop ebp
+	add esp, 4
+	ret
+
+sti:
+	sti
+	ret
+
+wait_:
+	push ecx
+	push eax
+	mov ecx, 10000000
+.s2
+	inc eax
+	loop .s2
+	pop eax
+	pop ecx
+	ret
+
+waitl:
+	push ecx
+	mov ecx, 100000000
+.s3
+	call wait_
+	loop .s3
+	pop ecx
+	ret

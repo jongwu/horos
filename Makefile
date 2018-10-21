@@ -8,9 +8,9 @@ CFLAG = -I include -c  -o
 #CFLAG = -I include -c -fno-builtin -fno-stack-protector -o
 LD = ld
 LDFLAG =  -Ttext $(ENTRYOFFSET) -e $(ENTRYPOINT) 
-OBJ = lib/klib.o lib/klibc.o init/head.o init/main.o init/idt.o
+OBJ = lib/klib.o lib/klibc.o init/head.o init/main.o init/idt.o kernel/sche.o kernel/driver.o
 KERNEL = kernel.bin
-INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h include/string.h
+INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h include/string.h include/sche.h include/driver.h
 all: boot/boot.bin boot/setup.bin $(KERNEL)
 clean:
 	rm -r $(KERNEL)
@@ -34,6 +34,12 @@ init/main.o: init/main.c $(INCLUDE)
 	$(CC) $(CFLAG) $@ $<
 
 init/idt.o: init/idt.c
+	$(CC) $(CFLAG) $@ $<
+
+kernel/sche.o:	kernel/sche.c
+	$(CC) $(CFLAG) $@ $<
+
+kernel/driver.o: kernel/driver.c
 	$(CC) $(CFLAG) $@ $<
 
 $(KERNEL): $(OBJ)

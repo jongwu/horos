@@ -4,7 +4,6 @@
 #include "idt.h"
 extern void print(char *msg, int len);
 int leng(char *msg);
-void init_disp_pos();
 void wait();
 int main()
 {
@@ -13,13 +12,14 @@ int main()
 	init_disp_pos();
 	clear_disp();
 	char x=57;
-	for(int i=0;i<10;i++)
+/*	for(int i=0;i<10;i++)
 	{
 		char tmp=x-i;
 		disp_char(tmp);
 		wait();
-	}
-       char *str="Hello, my friend. This is horos.\n";
+	}*/
+	sti();
+	char *str="Hello, my friend. This is horos.\n";
 	disp_str(str);
 	wait();
 	str = "I am a small operating system in developing.\n";
@@ -34,7 +34,7 @@ int main()
 	str = "Thank you\n";
 	disp_str(str);
 	wait();
-	str="now, I just begin to boot kernel, but this kernel is nothing else beside print some words\n";
+	str="now,keyboard is enabled, so you can type words\n";
 	disp_str("\n");
 	disp_str(str);      
 //	int_n();
@@ -50,16 +50,17 @@ int leng(char *msg)
         }
         return len;
 }
+
 void spurious_irq(int irq)
 {
 	clear_disp();
+	disp_str("spurious_irq called\n");
         disp_int(irq);
         disp_str("\n");
 }
 
 void disp_int(int input)
 {
-	disp_str("spurious_irq called\n");
         char* output;
         itoa(output, input);
         disp_str(output); 
@@ -74,6 +75,6 @@ void clear_disp()
 
 void wait()
 {
-	int i=0xffffff;
+	int i=0x7fffff;
 	while(i--);
 }

@@ -38,7 +38,7 @@ void set_idt_gate(int , unsigned int);
 void init_idt();
 void int_n();
 void set_idtr();
-
+void sti();
 
 
 
