@@ -2,7 +2,7 @@
 #define __PAGE__
 static inline void init_pde();
 static void init_pte();
-void open_paging();
+static inline void open_paging();
 void start_paging();
 
 

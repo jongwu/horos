@@ -13,7 +13,6 @@ int main()
 	set_idtr();
 	init_disp_pos();
 	start_paging();
-	open_paging();
 	clear_disp();
 	char x=57;
 /*	for(int i=0;i<10;i++)

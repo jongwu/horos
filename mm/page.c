@@ -21,7 +21,7 @@ static void init_pte()
 
 }
 
-void open_paging()
+static inline void open_paging()
 {
 	__asm__ __volatile__ ("movl %0, %%cr3":: "r"(0));
 	__asm__ __volatile__ ("movl %%cr0, %%eax" :: );
@@ -33,5 +33,5 @@ void start_paging()
 {
 	init_pde();
 	init_pte();
-//	open_paging();
+	open_paging();
 }
