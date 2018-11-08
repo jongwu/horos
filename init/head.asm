@@ -52,7 +52,6 @@ start:
 ;	lidt [idtr]
 ;	call setup_pde
 ;	call start_paging
-;	int 30
 ;	sti
 	jmp main
 	jmp $
@@ -85,10 +84,11 @@ set_idtr:
 int_n:
 	int 35
 	ret
+;we just set 1M page memory for kernel
 setup_pde:
 	mov eax, pte_base_addr
 	add eax, 0x113
-	mov ecx, 4
+	mov ecx, 1
 	mov edx, 0
 .l1	mov [pde_base_addr+edx], eax
 	call setup_pte
@@ -104,7 +104,7 @@ setup_pte:
 	push edi
 	mov eax, 0
 	add eax, 0x113
-	mov ecx, 1023
+	mov ecx, 255
 	mov ebx, 0
 .l2	mov edi, edx
 	shl edi, 10
@@ -458,9 +458,13 @@ stack_exception:
 general_protection:
 	push	13		; vector_no	= D
 	call	exception
+
 page_fault:
 	push	14		; vector_no	= E
 	call	exception
+	add esp, 8
+	iret
+
 copr_error:
 	push	0xFFFFFFFF	; no err code
 	push	16		; vector_no	= 10h
@@ -468,8 +472,7 @@ copr_error:
 
 exception:
 	call	exception_handler
-	add	esp, 4*2	; 让栈顶指向 EIP，堆栈中从顶向下依次是：EIP、CS、EFLAGS
-	iret
+	ret
 
 exception_handler:
 	push ebp
@@ -480,7 +483,6 @@ exception_handler:
 	mov byte [gs:0], al
 	pop eax
 	pop ebp
-	add esp, 4
 	ret
 
 sti:

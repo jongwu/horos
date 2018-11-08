@@ -2,14 +2,18 @@
 #include "lib.h"
 #include "global.h"
 #include "idt.h"
+#include "page.h"
 extern void print(char *msg, int len);
 int leng(char *msg);
 void wait();
+void disp_int(int input);
 int main()
 {
 	init_idt();
 	set_idtr();
 	init_disp_pos();
+	start_paging();
+	open_paging();
 	clear_disp();
 	char x=57;
 /*	for(int i=0;i<10;i++)
@@ -38,8 +42,8 @@ int main()
 	disp_str("\n");
 	disp_str(str);      
 //	int_n();
-        while(1);
-        return 0;
+    while(1);
+    return 0;
 }
 
 int leng(char *msg)
