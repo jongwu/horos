@@ -112,7 +112,7 @@ Init8259A:
         out     0A1h, al        ; 从8259, ICW4.
 	call	io_delay
 
-        mov     al, 11111101b   ; 仅仅开启定时器中断
+        mov     al, 11111100b   ; 仅仅开启定时器中断
         ;mov    al, 11111111b   ; 屏蔽主8259所有中断
         out     021h, al        ; 主8259, OCW1.
 	call	io_delay

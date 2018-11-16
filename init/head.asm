@@ -10,6 +10,7 @@ extern spurious_irq
 extern disp_int
 extern scheduler
 extern keyboard
+extern exception_handler
 global  divide_error
 global  single_step_exception
 global  nmi
@@ -457,13 +458,14 @@ stack_exception:
 	jmp	exception
 general_protection:
 	push	13		; vector_no	= D
-	call	exception
+	jmp	exception
 
 page_fault:
 	push	14		; vector_no	= E
-	call	exception
-	add esp, 8
-	iret
+	jmp	exception
+;	add esp, 8
+;	iret
+	
 
 copr_error:
 	push	0xFFFFFFFF	; no err code
@@ -472,18 +474,18 @@ copr_error:
 
 exception:
 	call	exception_handler
-	ret
+	hlt
 
-exception_handler:
-	push ebp
-	push eax
-	mov ebp, esp
-	mov eax, [ebp + 12]
-	add eax, 65
-	mov byte [gs:0], al
-	pop eax
-	pop ebp
-	ret
+;exception_handler:
+;	push ebp
+;	push eax
+;	mov ebp, esp
+;	mov eax, [ebp + 12]
+;	add eax, 65
+;	mov byte [gs:0], al
+;	pop eax
+;	pop ebp
+;	ret
 
 sti:
 	sti

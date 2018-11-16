@@ -15,14 +15,14 @@ int main()
 	start_paging();
 	clear_disp();
 	char x=57;
+	sti();
 /*	for(int i=0;i<10;i++)
 	{
 		char tmp=x-i;
 		disp_char(tmp);
 		wait();
 	}*/
-	sti();
-	char *str="Hello, my friend. This is horos.\n";
+/*	char *str="Hello, my friend. This is horos.\n";
 	disp_str(str);
 	wait();
 	str = "I am a small operating system in developing.\n";
@@ -39,7 +39,7 @@ int main()
 	wait();
 	str="now,keyboard is enabled, so you can type words\n";
 	disp_str("\n");
-	disp_str(str);      
+	disp_str(str);      */
 //	int_n();
     while(1);
     return 0;
