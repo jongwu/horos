@@ -13,4 +13,4 @@
 
 int                     disp_pos;
 
-
+typedef unsigned int u32;

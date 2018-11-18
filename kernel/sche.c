@@ -4,6 +4,13 @@
 #include "global.h"
 void dispA();
 void dispB();
+struct thread_stack{
+	u32 ebp;
+	u32 ebx;
+	u32 ebi;
+	u32 esi;
+	
+};	
 struct task {
 	unsigned int cs;
 	unsigned int eip;
@@ -14,9 +21,9 @@ void scheduler()
 {
 	disp_str("S");
 	ptask[0].cs=0x10;
-	ptask[0].eip=dispA-0xb000;
+	ptask[0].eip=dispA;
 	ptask[1].cs=0x10;
-	ptask[1].eip=dispB-0xb000;
+	ptask[1].eip=dispB;
 	unsigned int ip = ptask[(++current)%2].eip;
 	
 //	disp_int(ptask[0].eip);

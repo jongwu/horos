@@ -5,7 +5,7 @@ void set_idt_gate(int n, unsigned int addr)
 	val_low = 0x300000;
 
 	/* 0xb000 is head segment phyical address */
-	addr -= 0xb000;
+//	addr -= 0xb000;
 
 	tmp = 0x0000ffff & addr;
 	val_low |= tmp;
