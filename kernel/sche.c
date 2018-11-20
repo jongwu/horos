@@ -9,25 +9,28 @@ struct thread_stack{
 	u32 ebx;
 	u32 ebi;
 	u32 esi;
-	
-};	
-struct task {
-	unsigned int cs;
-	unsigned int eip;
+	void (*eip)(thread_func* func, void* func_arg);
 };
-int current = 0;
-	struct task ptask[2]={{0x10, dispA},{0x10, dispB}};
+
+enum task_status {
+	RUNNING,
+	READY,
+	BLOCKED,
+	WAITING,
+	DIED
+};
+	
+struct task {
+	void *thread_stack;
+	enum task_status status;
+	u32 prio;
+	u32 ticks;
+	u32* pde;
+	u32 magic;
+};
+
 void scheduler()
 {
-	disp_str("S");
-	ptask[0].cs=0x10;
-	ptask[0].eip=dispA;
-	ptask[1].cs=0x10;
-	ptask[1].eip=dispB;
-	unsigned int ip = ptask[(++current)%2].eip;
-	
-//	disp_int(ptask[0].eip);
-	__asm__ __volatile__ ("call %0":: "r"(ip)); 
 
 }	
 
