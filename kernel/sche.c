@@ -29,9 +29,22 @@ struct task {
 	u32 magic;
 };
 
+struct task task_list[20];
+u32 task_number=0, task_max=0;
+
 void scheduler()
 {
-
+	struct task cur, next;
+	if(task_max < 1)
+		return;
+	if(task_number < task_max)
+	{
+		cur = task_list[task_number % task_max];
+		next = task_list[(task_number + 1) % task_max];
+		task_number++;
+//		switch_to(cur, next);
+	}
+	
 }	
 
 void dispA()
