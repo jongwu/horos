@@ -8,9 +8,9 @@ CFLAG =  -m32 -I include -c  -o
 #CFLAG = -I include -c -fno-builtin -fno-stack-protector -o
 LD = ld
 LDFLAG = -m elf_i386 -Ttext $(ENTRYOFFSET) -e $(ENTRYPOINT) 
-OBJ = lib/klib.o lib/klibc.o init/head.o init/main.o init/idt.o kernel/sche.o kernel/driver.o mm/page.o
+OBJ = lib/klib.o lib/klibc.o init/head.o init/main.o init/idt.o kernel/sche.o kernel/switch.o kernel/driver.o mm/page.o mm/memory.o 
 KERNEL = kernel.bin
-INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h include/string.h include/sche.h include/driver.h include/page.h
+INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h  include/sche.h include/driver.h include/page.h
 
 all: boot/boot.bin boot/setup.bin $(KERNEL)
 clean:
@@ -37,13 +37,19 @@ init/main.o: init/main.c $(INCLUDE)
 init/idt.o: init/idt.c
 	$(CC) $(CFLAG) $@ $<
 
-kernel/sche.o:	kernel/sche.c
-	$(CC) $(CFLAG) $@ $<
+kernel/sche.o:	kernel/sche.c 
+	$(CC) $(CFLAG) $@ $^
 
 kernel/driver.o: kernel/driver.c
 	$(CC) $(CFLAG) $@ $<
 
+kernel/switch.o: kernel/switch.asm
+	$(ASM) $(ASMFLAG) $@ $<
+
 mm/page.o: mm/page.c
+	$(CC) $(CFLAG) $@ $<
+
+mm/memory.o: mm/memory.c
 	$(CC) $(CFLAG) $@ $<
 
 $(KERNEL): $(OBJ)

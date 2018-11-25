@@ -1,22 +1,19 @@
 #include "page.h"
+int *pde = 0, *pte = 0;
 static inline void init_pde()
 {
-	int *pde=0, i=0;
-	*pde = 0x1113;
-	while(i++ < 1023)
-	{
-		*(pde + i) = 0x10000;
-	}
+	pde=(void *)0;
+	*pde = 0x1003;
 
 }
 
 static void init_pte()
 {
-	int *pte = 0x1000;
 	int i=-1;
-	while(i++ < 256)
+	pte = (void *)0x1000;
+	while(i++ < 1024)
 	{
-		*(pte + i) = 0x113 + i * 0x1000;
+		*(pte + i) = 0x003 + i * 0x1000;
 	}
 
 }

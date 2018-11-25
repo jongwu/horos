@@ -2,6 +2,7 @@
 #include "lib.h"
 #include "type.h"
 #include "global.h"
+#include "page.h"
 void dispA();
 void dispB();
 
@@ -31,12 +32,15 @@ void scheduler()
 
 void init_thread(struct task *thread, int proi)
 {
+	disp_str("go into init_thread\n");
+	memset(thread, 0, 4096);
 	thread->status = RUNNING;
 	thread->thread_stack = thread + PAGE_SIZE;
 }
 
 void thread_create(struct task *thread, thread_func function, void *arg)
 {
+	disp_str("go into thread_creat\n");
 	thread->thread_stack -= sizeof(thread);
 	thread->thread_stack->eip = thread_function;
 	thread->thread_stack->func = function;
@@ -49,28 +53,12 @@ void thread_create(struct task *thread, thread_func function, void *arg)
 
 void thread_start(thread_func function, void *arg)
 {
-	struct task *thread = get_kernel_page();
-	thread_init(thread);
+	disp_str("go into thread_start\n");
+	struct task *thread = get_free_page();
+	disp_int((int)thread);
+	disp_str("\n");
+	init_thread(thread, 0);
 	thread_create(thread, function, arg);
-	task_list[task_max++] = thread;
+	task_list[task_max++] = thread; 
 }
 
-void dispA()
-{
-//	while(1)
-	{
-		int x=0x100000;
-		while(x--);
-		disp_str("process A is running");
-	}
-}
-
-void dispB()
-{
-//	while(1)
-	{
-		int x=0x100000;
-		while(x--);
-		disp_str("process B is running");
-	}
-}

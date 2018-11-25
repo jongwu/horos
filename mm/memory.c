@@ -36,7 +36,15 @@ unsigned int get_free_page()
 
 void free_page(unsigned int addr)
 {
-	if(addr/=4096 < 4096)
-	mem_map[addr]=0;
+	if((addr/=4096) < 4096)
+	page_map[addr]=0;
 }
 
+void memset(char *p, int n, int num)
+{
+	if(num < 0) return;
+	while(num--)
+	{
+		*p++ = n;
+	}
+}

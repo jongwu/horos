@@ -6,11 +6,12 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /* EXTERN is defined as extern except in global.c */
-#ifdef  GLOBAL_VARIABLES_HERE
-#undef  EXTERN
-#define EXTERN
+#ifndef  __GLOBAL__
+#define  __GLOBAL__
+typedef unsigned int u32;
+int                     disp_pos;
+#define NULL (void*)0
 #endif
 
-int                     disp_pos;
 
-typedef unsigned int u32;
+

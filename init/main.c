@@ -7,6 +7,8 @@ extern void print(char *msg, int len);
 int leng(char *msg);
 void wait();
 void disp_int(int input);
+void dispA();
+void dispB();
 int main()
 {
 	init_idt();
@@ -15,7 +17,9 @@ int main()
 	start_paging();
 	clear_disp();
 	char x=57;
-	sti();
+	thread_start(dispA, NULL);
+//	thread_start(dispB, NULL);
+//	sti();
 /*	for(int i=0;i<10;i++)
 	{
 		char tmp=x-i;
@@ -80,4 +84,25 @@ void wait()
 {
 	int i=0x7fffff;
 	while(i--);
+}
+
+
+void dispA()
+{
+//	while(1)
+	{
+		int x=0x100000;
+		while(x--);
+		disp_str("process A is running");
+	}
+}
+
+void dispB()
+{
+//	while(1)
+	{
+		int x=0x100000;
+		while(x--);
+		disp_str("process B is running");
+	}
 }

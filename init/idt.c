@@ -80,4 +80,67 @@ void exception_handler(int vec_no, int err_code, int eip, int cs, int eflags)
 //	disp_str(p[vec_no]);
 
 	disp_int(vec_no);
+	disp_str("\n");
+	switch (vec_no) {
+		case 0 :
+			disp_str(p0);
+			break;
+		case 1 :
+			disp_str(p1);
+			break;
+		case 2 :
+			disp_str(p2);
+			break;
+		case 3 :
+			disp_str(p3);
+			break;
+		case 4 :
+			disp_str(p4);
+			break;
+		case 5 :
+			disp_str(p5);
+			break;
+		case 6 :
+			disp_str(p6);
+			break;
+		case 7 :
+			disp_str(p7);
+			break;
+		case 8 :
+			disp_str(p8);
+			break;
+		case 9 :
+			disp_str(p9);
+			break;
+		case 10 :
+			disp_str(p10);
+			break;
+		case 11 :
+			disp_str(p11);
+			break;
+		case 12 :
+			disp_str(p12);
+			break;
+		case 13 :
+			disp_str(p13);
+			break;
+		case 14 :
+			disp_str(p14);
+			break;
+		case 15 :
+			disp_str(p15);
+			break;
+		case 16 :
+			disp_str(p16);
+			break;
+		case 17 :
+			disp_str(p17);
+			break;
+		case 18 :
+			disp_str(p18);
+			break;
+		case 19 :
+			disp_str(p19);
+			break;
+	}		
 }

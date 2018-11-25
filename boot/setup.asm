@@ -44,7 +44,7 @@
 
 	;head code descriptor
 	 mov dword [ebx+0x30], 0x0000ffff   ;base address is 1M, limit is 128KB
-	 mov dword [ebx+0x34], 0x004f9800   ;code segment
+	 mov dword [ebx+0x34], 0x00cf9800   ;code segment
          
          ;set descriptor limit in gdtr
          mov word [cs: pgdt+setup_base_address],55      ;descriptor limit   

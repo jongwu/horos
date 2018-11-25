@@ -15,5 +15,4 @@ static void init_disp_pos();
 
 
 
-
 #endif
