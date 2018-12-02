@@ -9,6 +9,7 @@ void wait();
 void disp_int(int input);
 void dispA();
 void dispB();
+int xx=10;
 int main()
 {
 	init_idt();
@@ -16,8 +17,11 @@ int main()
 	init_disp_pos();
 	start_paging();
 	clear_disp();
-	char x=57;
-	thread_start(dispA, NULL);
+	char p[10];
+	disp_int((int)p);
+	*p =0;
+	disp_int(10);
+//	thread_start(dispA, NULL);
 //	thread_start(dispB, NULL);
 //	sti();
 /*	for(int i=0;i<10;i++)
@@ -70,7 +74,8 @@ void disp_int(int input)
 {
         char* output;
         itoa(output, input);
-        disp_str(output); 
+	disp_str("123545\n");
+      disp_str(output); 
 }
 
 void clear_disp()

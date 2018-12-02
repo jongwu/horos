@@ -5,9 +5,9 @@
 #include "page.h"
 void dispA();
 void dispB();
-
+static void init_task();
 struct task *task_list[20];
-u32 task_number=0, task_max=0;
+int task_number=10, task_max;
 void thread_function(thread_func function, void *arg)
 {
         function(arg);
@@ -35,30 +35,66 @@ void init_thread(struct task *thread, int proi)
 	disp_str("go into init_thread\n");
 	memset(thread, 0, 4096);
 	thread->status = RUNNING;
-	thread->thread_stack = thread + PAGE_SIZE;
+	thread->t_stack = (void *)(thread + PAGE_SIZE);
 }
 
 void thread_create(struct task *thread, thread_func function, void *arg)
 {
 	disp_str("go into thread_creat\n");
-	thread->thread_stack -= sizeof(thread);
-	thread->thread_stack->eip = thread_function;
-	thread->thread_stack->func = function;
-	thread->thread_stack->func_arg = arg;
-	thread->thread_stack->ebp = 0;
-	thread->thread_stack->ebx = 0;
-	thread->thread_stack->ebi = 0;
-	thread->thread_stack->esi = 0;
+	disp_str("go into thread_creat\n");
+	int tm = sizeof(struct thread_stack);
+	disp_int(tm);
+	disp_str("\n");
+	void *tmp = thread->t_stack;
+/*	thread->t_stack -= sizeof(struct thread_stack);
+	thread->t_stack->eip = thread_function;
+	thread->t_stack->func = function;
+	thread->t_stack->func_arg = arg;
+	thread->t_stack->ebp = 0;
+	thread->t_stack->ebx = 0;
+	thread->t_stack->ebi = 0;
+	thread->t_stack->esi = 0;
+*/
 }
 
 void thread_start(thread_func function, void *arg)
 {
+	disp_int(task_number);
+	init_task();
 	disp_str("go into thread_start\n");
 	struct task *thread = get_free_page();
+	struct task tmp = *thread;
+	thread->proi = 0;
+	thread->status = RUNNING;
+	
 	disp_int((int)thread);
 	disp_str("\n");
 	init_thread(thread, 0);
 	thread_create(thread, function, arg);
+	disp_str("aaaaaaaaaaa\n");
 	task_list[task_max++] = thread; 
+/*	task_list[0]= thread;
+	disp_int(task_max);
+		disp_str("\n");
+	disp_int(task_number);
+*/
 }
 
+static void init_task()
+{
+	disp_str("go into init task\n");
+	int i=0;
+	i=0;
+	disp_str("i=");
+	disp_int(i);
+	disp_str("\n");
+	if(i==0)
+	{
+		disp_str("go into set task number\n");
+		task_number = 0;
+		task_max = 0;
+		disp_int(task_number);
+		disp_str("\n");
+	}
+	i++;
+}

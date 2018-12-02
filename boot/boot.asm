@@ -4,7 +4,7 @@
 
 	org 0x7c00
 	setup_base_address	equ	0x000009000 
-	head_segment_address	equ	0x000000a00
+	head_segment_address	equ	0x000000af6
 	setup_sector	        equ	1
 	head_sector	        equ	9
          

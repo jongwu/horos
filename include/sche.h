@@ -26,9 +26,9 @@ enum task_status {
 };
 
 struct task {
-        struct thread_stack *thread_stack;
+        struct thread_stack *t_stack;
         enum task_status status;
-        u32 prio;
+        u32 proi;
         u32 ticks;
         u32* pde;
         u32 magic;

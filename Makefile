@@ -1,14 +1,14 @@
-ENTRYPOINT = start
+ENTRYPOINT = main
 ENTRYOFFSET = 0xb000
 ASM = nasm
 ASMOFLAG = -I include -o
 ASMFLAG = -f elf32 -I include -o
 CC = gcc
-CFLAG =  -m32 -I include -c  -o
-#CFLAG = -I include -c -fno-builtin -fno-stack-protector -o
-LD = ld
-LDFLAG = -m elf_i386 -Ttext $(ENTRYOFFSET) -e $(ENTRYPOINT) 
-OBJ = lib/klib.o lib/klibc.o init/head.o init/main.o init/idt.o kernel/sche.o kernel/switch.o kernel/driver.o mm/page.o mm/memory.o 
+CFLAG = -m32 -Wall  -fno-stack-protector -fno-omit-frame-pointer -fno-tree-sra -Wextra -mno-red-zone -fno-reorder-blocks -fno-asynchronous-unwind-tables  -I include -c -fno-builtin -Wstrict-prototypes -Wmissing-prototypes -o
+#CFLAG = -m32 -I include -c -o
+LD = gcc
+LDFLAG = -nostdinc -nostdlib -Wl,--omagic -Wl,--build-id=none -Wl,--gc-sections -Ttext $(ENTRYOFFSET) -e $(ENTRYPOINT) -Wl,-m,elf_i386
+OBJ = init/main.o init/head.o init/idt.o kernel/sche.o kernel/switch.o kernel/driver.o mm/page.o mm/memory.o lib/klib.o lib/klibc.o
 KERNEL = kernel.bin
 INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h  include/sche.h include/driver.h include/page.h
 
@@ -38,7 +38,7 @@ init/idt.o: init/idt.c
 	$(CC) $(CFLAG) $@ $<
 
 kernel/sche.o:	kernel/sche.c 
-	$(CC) $(CFLAG) $@ $^
+	$(CC) $(CFLAG) $@ $<
 
 kernel/driver.o: kernel/driver.c
 	$(CC) $(CFLAG) $@ $<
@@ -53,4 +53,4 @@ mm/memory.o: mm/memory.c
 	$(CC) $(CFLAG) $@ $<
 
 $(KERNEL): $(OBJ)
-	$(LD) $(LDFLAG) -o $@ $(OBJ)
+	$(LD) $(LDFLAG)  -o $@ $(OBJ) 
