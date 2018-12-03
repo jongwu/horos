@@ -12,18 +12,15 @@ void dispB();
 int xx=10;
 int main()
 {
+	init_global();
 	init_idt();
 	set_idtr();
 	init_disp_pos();
 	start_paging();
 	clear_disp();
-	char p[10];
-	disp_int((int)p);
-	*p =0;
-	disp_int(10);
-//	thread_start(dispA, NULL);
-//	thread_start(dispB, NULL);
-//	sti();
+	thread_start(dispA, NULL);
+	thread_start(dispB, NULL);
+	sti();
 /*	for(int i=0;i<10;i++)
 	{
 		char tmp=x-i;
@@ -74,7 +71,6 @@ void disp_int(int input)
 {
         char* output;
         itoa(output, input);
-	disp_str("123545\n");
       disp_str(output); 
 }
 
