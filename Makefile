@@ -1,5 +1,6 @@
 ENTRYPOINT = main
 ENTRYOFFSET = 0xb000
+ARCH = $(shell uname -m)
 ASM = nasm
 ASMOFLAG = -I include -o
 ASMFLAG = -f elf32 -I include -o
@@ -22,7 +23,7 @@ lib/klib.o: lib/klib.asm $(INCLUDE)
 lib/klibc.o: lib/klib.c $(INCLUDE)
 	$(CC) $(CFLAG) $@ $<
 
-boot/boot.bin: boot/boot.asm $(INCLUDE)
+boot/boot.bin: boot/arch/$(ARCH)/boot.asm $(INCLUDE)
 	$(ASM) $(ASMOFLAG) $@ $<
 
 boot/setup.bin: boot/setup.asm $(INCLUDE)
