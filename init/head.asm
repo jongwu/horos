@@ -5,7 +5,9 @@ pde_base_addr equ 0x0000
 pte_base_addr equ 0x1000
 global print
 global start
+extern start_paging
 extern main
+extern current
 extern spurious_irq
 extern disp_int
 extern scheduler
@@ -54,6 +56,9 @@ start:
 ;	call setup_pde
 ;	call start_paging
 ;	sti
+;	call start_paging
+	sub esp, 4096
+	mov [current], esp
 	jmp main
 	jmp $
 
@@ -83,7 +88,7 @@ set_idtr:
 	ret
 
 int_n:
-	int 35
+	int 32
 	ret
 ;we just set 1M page memory for kernel
 setup_pde:
@@ -119,7 +124,7 @@ setup_pte:
 	pop eax
 	ret
 
-start_paging:
+;start_paging:
 	push eax
 	push ebx
 	mov eax, pde_base_addr
@@ -319,8 +324,8 @@ eoi_8259_master:
 
 ALIGN	16
 hwint00:		; Interrupt routine for irq 0 (the clock).
-	call scheduler	
 	call eoi_8259_master
+	call scheduler	
 	iret
 
 ALIGN	16

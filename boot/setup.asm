@@ -31,7 +31,7 @@
          mov dword [ebx+0x14],0x00409800    ;granularity is 1B
 
          ;stack descriptor                  ;base address is 0x00007C00，segment limit is 0xFFFFE 
-         mov dword [ebx+0x18],0x7c00fffe    ;granularity is 4KB 
+         mov dword [ebx+0x18],0x7000fffe    ;granularity is 4KB 
          mov dword [ebx+0x1c],0x00cf9600
          
          ;display descriptor   
@@ -46,8 +46,10 @@
 	 mov dword [ebx+0x30], 0x0000ffff   ;base address is 1M, limit is 128KB
 	 mov dword [ebx+0x34], 0x00cf9800   ;code segment
          
+         mov dword [ebx+0x38],0x0000ffff    ;granularity is 4KB 
+         mov dword [ebx+0x3c],0x00cf9600
          ;set descriptor limit in gdtr
-         mov word [cs: pgdt+setup_base_address],55      ;descriptor limit   
+         mov word [cs: pgdt+setup_base_address],63      ;descriptor limit   
 
  	;load GDTR
          lgdt [cs: pgdt+setup_base_address]
@@ -68,9 +70,9 @@
         ;jump to protect mode
 	mov eax, 0x08
 	mov ds, eax
-	mov eax, 0x18
+	mov eax, 0x8
 	mov ss, eax
-	mov sp, 0
+	mov esp, 0x10000
 	mov eax, 0x20
 	mov gs, eax
          jmp dword 0x0030:0xb000

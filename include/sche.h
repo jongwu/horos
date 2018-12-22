@@ -2,7 +2,7 @@
 #define HS_SCHE
 #include "global.h"
 
-#define PAGE_SIZE 1024
+#define PAGE_SIZE 0x1000
 
 long long heartbeat;
 typedef void thread_func(void*);
@@ -12,7 +12,9 @@ struct thread_stack{
         u32 ebx;
         u32 ebi;
         u32 esi;
+	void (*ret)();
         void (*eip)(thread_func* func, void* func_arg);
+	void (*unused)();
         thread_func *func;
         void *func_arg;
 };

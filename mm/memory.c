@@ -22,14 +22,15 @@ void init_mem()
 	}
 }
 
-unsigned int get_free_page()
+void *get_free_page()
 {
 	for (int i = 256; i < 4096; i++)
 	{
 		if(page_map[i] == 0)
 		{
 			page_map[i] = 1;
-			return 4096*i;
+			i *= 4096;
+			return (void *)i;
 		}
 	}
 }

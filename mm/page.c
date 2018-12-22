@@ -5,7 +5,7 @@ static inline void init_pde()
 {
 	pde=(void *)(START_PAGING_ADDR);
 	int i = -1;
-	while(i++ < 1024)
+	while(++i < 1024)
 		*(pde + i) = 0x003 + i * 0x1000 + START_PAGING_ADDR + 0x1000;
 
 }
@@ -14,9 +14,10 @@ static void init_pte()
 {
 	int i=-1, j = -1;
 	pte = (void *)(START_PAGING_ADDR +0x1000);
-	while(j++ < 1024)
+	while(++j < 1024)
 	{
-		while(i++ < 1024)
+		i = -1;
+		while(++i < 1024)
 		{
 			*(pte + j*1024 + i) = 0x003 + j * 0x1000 * 0x1000 + i * 0x1000;
 		}
@@ -35,5 +36,5 @@ void start_paging()
 {
 	init_pde();
 	init_pte();
-//	open_paging();
+	open_paging();
 }

@@ -3,30 +3,28 @@
 #include "global.h"
 #include "idt.h"
 #include "page.h"
+#include "sche.h"
 extern void print(char *msg, int len);
+extern struct task* task_list[20];
 int leng(char *msg);
 void wait();
 void disp_int(int input);
 void dispA();
 void dispB();
-int xx=10;
+extern int task_number;
+extern int task_max;
 int main()
 {
-	init_global();
+	clear_disp();
 	init_idt();
 	set_idtr();
 	init_disp_pos();
+	init_mem();
 	start_paging();
-	clear_disp();
-	thread_start(dispA, NULL);
+	init_global(); 
+	thread_start(dispA, NULL); 
 	thread_start(dispB, NULL);
 	sti();
-/*	for(int i=0;i<10;i++)
-	{
-		char tmp=x-i;
-		disp_char(tmp);
-		wait();
-	}*/
 /*	char *str="Hello, my friend. This is horos.\n";
 	disp_str(str);
 	wait();
@@ -67,12 +65,6 @@ void spurious_irq(int irq)
         disp_str("\n");
 }
 
-void disp_int(int input)
-{
-        char* output;
-        itoa(output, input);
-      disp_str(output); 
-}
 
 void clear_disp()
 {
@@ -90,20 +82,20 @@ void wait()
 
 void dispA()
 {
-//	while(1)
-	{
-		int x=0x100000;
-		while(x--);
-		disp_str("process A is running");
-	}
+		int y=1000;
+		while(y--){
+			int x=0x100000;
+			while(x--);
+			disp_str("-- ");
+		}
 }
 
 void dispB()
 {
-//	while(1)
-	{
+	int y=1000;
+	while(y--){
 		int x=0x100000;
 		while(x--);
-		disp_str("process B is running");
+		disp_str("++ ");
 	}
 }
