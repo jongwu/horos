@@ -83,7 +83,7 @@ void wait()
 void dispA()
 {
 		int y=1000;
-		while(y--){
+		while(1){
 			int x=0x100000;
 			while(x--);
 			disp_str("-- ");
@@ -93,7 +93,7 @@ void dispA()
 void dispB()
 {
 	int y=1000;
-	while(y--){
+	while(1){
 		int x=0x100000;
 		while(x--);
 		disp_str("++ ");

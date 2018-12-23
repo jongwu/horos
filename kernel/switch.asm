@@ -20,7 +20,6 @@ switch_to:
 	pop ebx
 	pop edi
 	pop esi
-	mov byte [gs:10], bl
 	ret
 
 ret_from_intr:

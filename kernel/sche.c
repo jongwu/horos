@@ -42,7 +42,6 @@ void scheduler()
 
 void init_thread(struct task *thread, int proi)
 {
-	disp_str("go into init_thread\n");
 	memset(thread, 0, 4096);
 	int tmp = (int)thread + PAGE_SIZE;
 	thread->t_stack = (void *)tmp;
@@ -50,11 +49,8 @@ void init_thread(struct task *thread, int proi)
 
 void thread_create(struct task *thread, thread_func function, void *arg)
 {
-	disp_str("go into thread_creat\n");
 	int tmp = (int)thread->t_stack - sizeof(struct thread_stack);
 	thread->t_stack = (void*)tmp;
-	disp_int(thread->t_stack);
-	disp_str("\n");
 	thread->t_stack->ret = ret_from_intr;
 	thread->t_stack->eip = thread_function;
 //	thread->t_stack->eip = fun;
@@ -70,7 +66,6 @@ void thread_create(struct task *thread, thread_func function, void *arg)
 
 void thread_start(thread_func function, void *arg)
 {
-	disp_str("go into thread_start\n");
 	int *p = get_free_page();
 	struct task *thread = get_free_page();
 	

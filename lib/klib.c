@@ -21,7 +21,7 @@ char * itoa1(char * str, int num)/* Êı×ÖÇ°ÃæµÄ 0 ²»±»ÏÔÊ¾³öÀ´, ±ÈÈç 0000B800 ±»Ï
         int     i=0;
         int     a[10];
         int x=num;
-	*p++='0';
+//	*p++='0';
         while(x/=10)i++;
        for(int j=i; j>=0; j--)
         {
@@ -29,13 +29,13 @@ char * itoa1(char * str, int num)/* Êı×ÖÇ°ÃæµÄ 0 ²»±»ÏÔÊ¾³öÀ´, ±ÈÈç 0000B800 ±»Ï
                 num/=10;
         }
 
- /*       for(int j=0;j<=2;j++)
+        for(int j=0;j<=i;j++)
         {
                 *p = a[j]+'0';
                 p++;
         }
         *p=0;
-*/        return str;
+        return str;
 }
 
 
@@ -87,6 +87,6 @@ PUBLIC char * itoa(char * str, int num)/* Êı×ÖÇ°ÃæµÄ 0 ²»±»ÏÔÊ¾³öÀ´, ±ÈÈç 0000B8
 void disp_int(int input)
 {
 	char* output;
-	itoa(output, input);
+	itoa1(output, input);
 	disp_str(output); 
 }

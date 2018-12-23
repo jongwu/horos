@@ -29,6 +29,11 @@ disp_str:
 	mov	esi, [ebp + 8]	; pszInfo
 	mov	edi, [disp_pos]
 	mov	ah, 0Fh
+.4:
+	mov edx, 4000
+	cmp  [disp_pos], edx
+	jae .5
+	jmp .1
 .1:
 	lodsb
 	test	al, al
@@ -56,7 +61,11 @@ disp_str:
 
 	pop	ebp
 	ret
-
+.5
+	mov edx, 0
+	mov [disp_pos], edx
+	mov edi, [disp_pos]
+	jmp .4
 ; ========================================================================
 ;                  void disp_color_str(char * info, int color);
 ; ========================================================================
