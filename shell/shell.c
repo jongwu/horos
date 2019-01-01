@@ -4,7 +4,7 @@ void *cmd_arg_table[10];
 void do_shell()
 {
 	disp_str("welcomm to horos shell\n");
-	disp_str("command list:\n$ ");
+	disp_str("command list:  ");
 	for(int i = 0; i < CMD_NUM; i++)
 	{
 		disp_str(cmd_table[i]);

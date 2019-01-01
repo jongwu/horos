@@ -14,6 +14,7 @@
 extern void (*cmd_fun_table[10])(void *arg);
 extern void print(char *msg, int len);
 void poweroff();
+void help();
 /*======================================================================*
                                itoa
  *======================================================================*/
@@ -112,13 +113,15 @@ void poweroff()
 
 void cmd_table_init()
 {
-	CMD_NUM = 3;
+	CMD_NUM = 4;
 	cmd_fun_table[0] = echo;
 	cmd_fun_table[1] = clear;
 	cmd_fun_table[2] = poweroff;
+	cmd_fun_table[3] = help;
 	cmd_table[0]="echo";
 	cmd_table[1]="clear";
 	cmd_table[2]="poweroff";
+	cmd_table[3]="help";
 	for(int i = 0; i < 20; i++)
 	{
 		kd_buf[i] = '\0';
@@ -143,4 +146,13 @@ int leng(char *msg)
 		len++;
         }
         return len;
+}
+
+void help()
+{
+	for(int i = 0; i < CMD_NUM; i++)
+	{
+		disp_str(cmd_table[i]);
+		disp_str(", ");
+	}
 }
