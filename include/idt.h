@@ -32,7 +32,7 @@ void  hwint12();
 void  hwint13();
 void  hwint14();
 void  hwint15();
-
+void  syscall_handler();
 unsigned int idt[512];
 void set_idt_gate(int , unsigned int);
 void init_idt();

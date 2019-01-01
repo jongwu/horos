@@ -1,5 +1,5 @@
 ENTRYPOINT = start
-ENTRYOFFSET = 0xb000
+ENTRYOFFSET = 0xc000
 ARCH = $(shell uname -m)
 ASM = nasm
 ASMOFLAG = -I include -o
@@ -9,7 +9,7 @@ CFLAG = -m32 -Wall  -fno-stack-protector -fno-omit-frame-pointer -fno-tree-sra -
 #CFLAG = -m32 -I include -c -o
 LD = gcc
 LDFLAG = -nostdinc -nostdlib -Wl,--omagic -Wl,--build-id=none -Wl,--gc-sections -Ttext $(ENTRYOFFSET) -e $(ENTRYPOINT) -Wl,-m,elf_i386
-OBJ = init/head.o init/main.o init/idt.o kernel/sche.o kernel/switch.o kernel/driver.o mm/page.o mm/memory.o lib/klib.o lib/klibc.o
+OBJ = init/head.o init/main.o init/idt.o kernel/sche.o kernel/switch.o kernel/driver.o mm/page.o mm/memory.o lib/klib.o lib/klibc.o shell/shell.o
 KERNEL = kernel.bin
 INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h  include/sche.h include/driver.h include/page.h
 
@@ -51,6 +51,9 @@ mm/page.o: mm/page.c
 	$(CC) $(CFLAG) $@ $<
 
 mm/memory.o: mm/memory.c
+	$(CC) $(CFLAG) $@ $<
+
+shell/shell.o: shell/shell.c
 	$(CC) $(CFLAG) $@ $<
 
 $(KERNEL): $(OBJ)

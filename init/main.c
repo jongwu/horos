@@ -6,7 +6,6 @@
 #include "sche.h"
 extern void print(char *msg, int len);
 extern struct task* task_list[20];
-int leng(char *msg);
 void wait();
 void disp_int(int input);
 void dispA();
@@ -22,9 +21,11 @@ int main()
 	init_mem();
 	start_paging();
 	init_global(); 
-	thread_start(dispA, NULL); 
-	thread_start(dispB, NULL);
+	cmd_table_init();
+//	thread_start(dispA, NULL); 
+//	thread_start(dispB, NULL);
 	sti();
+	do_shell();
 /*	char *str="Hello, my friend. This is horos.\n";
 	disp_str(str);
 	wait();
@@ -48,14 +49,6 @@ int main()
     return 0;
 }
 
-int leng(char *msg)
-{
-        int len=0;
-        while(msg[len]){
-                len++;
-        }
-        return len;
-}
 
 void spurious_irq(int irq)
 {
@@ -86,7 +79,7 @@ void dispA()
 		while(1){
 			int x=0x100000;
 			while(x--);
-			disp_str("-- ");
+			disp_str("~ ");
 		}
 }
 
@@ -96,6 +89,6 @@ void dispB()
 	while(1){
 		int x=0x100000;
 		while(x--);
-		disp_str("++ ");
+		disp_str("! ");
 	}
 }

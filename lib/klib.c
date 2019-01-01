@@ -10,8 +10,10 @@
 #include "protect.h"
 #include "proto.h"
 #include "global.h"
-
-
+#include "lib.h"
+extern void (*cmd_fun_table[10])(void *arg);
+extern void print(char *msg, int len);
+void poweroff();
 /*======================================================================*
                                itoa
  *======================================================================*/
@@ -89,4 +91,56 @@ void disp_int(int input)
 	char* output;
 	itoa1(output, input);
 	disp_str(output); 
+}
+
+void echo(char *buf)
+{
+	disp_str(buf);
+}
+
+void clear()
+{
+	init_disp_pos();
+	int i = 2000;
+	while(i--)disp_str(" ");
+}
+
+void poweroff()
+{
+	disp_str("poweroff has not been implimented yet, if you know how to do it, show me your code or just do it");
+}
+
+void cmd_table_init()
+{
+	CMD_NUM = 3;
+	cmd_fun_table[0] = echo;
+	cmd_fun_table[1] = clear;
+	cmd_fun_table[2] = poweroff;
+	cmd_table[0]="echo";
+	cmd_table[1]="clear";
+	cmd_table[2]="poweroff";
+	for(int i = 0; i < 20; i++)
+	{
+		kd_buf[i] = '\0';
+	}
+	p_kd_buf = 0;
+}
+
+int str_equal(char *p1, char *p2)
+{
+	while(*p1)
+	{
+		if(*p1++ != *p2++) return 0;
+	}
+	if(*p2)	return 0;
+	return 1;
+}
+
+int leng(char *msg)
+{
+        int len = 0;
+        while(msg[len]){
+		len++;
+        }
+        return len;
 }

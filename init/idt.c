@@ -50,6 +50,7 @@ void init_idt()
 	set_idt_gate(45, &hwint13);
 	set_idt_gate(46, &hwint14);
 	set_idt_gate(47, &hwint15);
+	set_idt_gate(0x80, &syscall_handler);
 }
 
 void exception_handler(int vec_no, int err_code, int eip, int cs, int eflags)

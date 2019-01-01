@@ -3,7 +3,7 @@
          ;build time: 2018-9-15          
          
 	 setup_base_address	equ	0x00009000 
-	 head_base_address	equ	0x0000a000
+	 head_base_address	equ	0x0000b000
 	 setup_sector		equ	1
 	 head_sector		equ	9
          
@@ -75,7 +75,8 @@
 	mov esp, 0x10000
 	mov eax, 0x20
 	mov gs, eax
-         jmp dword 0x0030:0xb000
+	mov byte [gs:0], 'h'
+         jmp dword 0x0030:0xc000
 
          [bits 32]			    ;32 bit code
 	

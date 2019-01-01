@@ -13,6 +13,7 @@ extern disp_int
 extern scheduler
 extern keyboard
 extern exception_handler
+global  syscall_handler
 global  divide_error
 global  single_step_exception
 global  nmi
@@ -481,6 +482,9 @@ exception:
 	call	exception_handler
 	hlt
 
+syscall_handler:
+	iret
+
 ;exception_handler:
 ;	push ebp
 ;	push eax
@@ -515,3 +519,5 @@ waitl:
 	loop .s3
 	pop ecx
 	ret
+
+

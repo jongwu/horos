@@ -28,9 +28,9 @@ disp_str:
 
 	mov	esi, [ebp + 8]	; pszInfo
 	mov	edi, [disp_pos]
-	mov	ah, 0Fh
+	mov	ah,0fh
 .4:
-	mov edx, 4000
+	mov  edx, 4000
 	cmp  [disp_pos], edx
 	jae .5
 	jmp .1

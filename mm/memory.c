@@ -16,7 +16,7 @@ void init_mem()
 	}
 
 	/* user can use memory higher than 1M */
-	for(int i = 256; i < 4096; i++)
+	for(int i = 256; i < 2027; i++)
 	{
 		page_map[i] = 0;
 	}

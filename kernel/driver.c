@@ -2,14 +2,15 @@
 #include "driver.h"
 #include "global.h"
 extern char key[60];
+char kd_buf[20] = {0};
+char *cmd_table[10];
+void (*cmd_fun_table[10])(void *arg);
+void *cmd_arg_table[10];
+int CMD_NUM = 10;
+int p_kd_buf;
 void keyboard(int k)
 {
-	if(k==57)
-	{
-		disp_str(" ");
-		return;
-	}
-	if (k>53)return;
+	if(k > 57)return;
 	if (k==14)
 	{	
 		disp_pos-=2;
@@ -17,6 +18,7 @@ void keyboard(int k)
 		disp_pos-=2;
 		return;
 	}
+
 key[2]='1';
 key[3]='2';
 key[4]='3';
@@ -68,7 +70,23 @@ key[50]='m';
 key[51]=',';
 key[52]='.';
 key[53]='/';
+key[57]=' ';
 	char *p="a";
 	*p=key[k];
+	if(cmd_open)
+	{
+		void *arg;
+			*(kd_buf + p_kd_buf) = key[k];
+//			*(kd_buf + p_kd_buf + 1) = 0;
+		
+			p_kd_buf++;
+/*		else
+			for(int i=0; i < CMD_NUM; i++)
+			{
+				if(cmd_table[i] == kd_buf)
+					thread_start(cmd_fun_table[i],cmd_arg_table[i]);
+				kd_buf = "";
+			}
+*/	}
 	disp_str(p);
 }
