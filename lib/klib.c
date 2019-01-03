@@ -15,6 +15,18 @@ extern void (*cmd_fun_table[10])(void *arg);
 extern void print(char *msg, int len);
 void poweroff();
 void help();
+#define BCD_TO_DEC(val) \
+(((val) & 15)  + ((val) >> 4) * 10)
+
+typedef struct time_val{
+	int sec;
+	int min;
+	int hour;
+	int day;
+	int mon;
+	int year;
+};
+
 /*======================================================================*
                                itoa
  *======================================================================*/
@@ -104,6 +116,9 @@ void clear()
 	init_disp_pos();
 	int i = 2000;
 	while(i--)disp_str(" ");
+	init_disp_pos();
+	disp_str("$ ");
+	
 }
 
 void poweroff()
@@ -111,17 +126,53 @@ void poweroff()
 	disp_str("poweroff has not been implimented yet, if you know how to do it, show me your code or just do it");
 }
 
+void time()
+{
+	struct time_val t;
+	t.sec = CMOS_READ(0);
+	t.min = CMOS_READ(2);
+	t.hour = CMOS_READ(4);
+	t.day = CMOS_READ(7);
+	t.mon = CMOS_READ(8);
+	t.year = CMOS_READ(9);
+
+	t.sec = BCD_TO_DEC(t.sec);
+	t.min = BCD_TO_DEC(t.min);
+	t.hour = BCD_TO_DEC(t.hour);
+	t.day = BCD_TO_DEC(t.day);
+	t.mon = BCD_TO_DEC(t.mon);
+	t.year = BCD_TO_DEC(t.year);
+	t.year += 2000;
+	t.hour += 8;
+	t.hour %= 24;
+
+	disp_int(t.year);
+	disp_str("/");
+	disp_int(t.mon);
+	disp_str("/");
+	disp_int(t.day);
+	disp_str("  ");
+	disp_int(t.hour);
+	disp_str(":");
+	disp_int(t.min);
+	disp_str(":");
+	disp_int(t.sec);
+
+}
+
 void cmd_table_init()
 {
-	CMD_NUM = 4;
+	CMD_NUM = 5;
 	cmd_fun_table[0] = echo;
 	cmd_fun_table[1] = clear;
 	cmd_fun_table[2] = poweroff;
 	cmd_fun_table[3] = help;
+	cmd_fun_table[4] = time;
 	cmd_table[0]="echo";
 	cmd_table[1]="clear";
 	cmd_table[2]="poweroff";
 	cmd_table[3]="help";
+	cmd_table[4]="time";
 	for(int i = 0; i < 20; i++)
 	{
 		kd_buf[i] = '\0';

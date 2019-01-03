@@ -17,7 +17,7 @@ void do_shell()
 	while(1)
 	{
 		if(p_kd_buf < 1)continue;
-		if(kd_buf[p_kd_buf - 1] == '\n')
+		if(p_kd_buf > 1 && kd_buf[p_kd_buf - 1] == '\n')
 		{	
 			char *arg, *cmd;
 			int i;
@@ -29,8 +29,9 @@ void do_shell()
 				if(str_equal(cmd_table[i], cmd))
 				{
 					thread_function(cmd_fun_table[i], arg);
+					if(!str_equal(cmd_table[i],"clear"))
+						disp_str("\n$");
 					p_kd_buf = 0;
-					disp_str("\n$");
 					break;
 				}
 			}
@@ -66,6 +67,5 @@ int parse_cmd(char *buf, char *cmd, char *arg)
 
 void shell_disp(char *str)
 {
-	disp_str("$");
 	disp_str(str);
 }

@@ -72,7 +72,7 @@
 	mov ds, eax
 	mov eax, 0x8
 	mov ss, eax
-	mov esp, 0x10000
+	mov esp, 0x20000
 	mov eax, 0x20
 	mov gs, eax
 	mov byte [gs:0], 'h'
