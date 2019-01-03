@@ -123,7 +123,9 @@ void clear()
 
 void poweroff()
 {
-	disp_str("poweroff has not been implimented yet, if you know how to do it, show me your code or just do it");
+	disp_str("\nI will sleep and never wake up\nsee you next time \n");
+	__asm__ ("cli");
+	__asm__ ("hlt");
 }
 
 void time()
