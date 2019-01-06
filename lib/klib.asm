@@ -17,6 +17,7 @@ global	disp_color_str
 global	out_byte
 global	in_byte
 global  disp_char
+global pprint
 ;global  init_disp_pos
 
 ; ========================================================================
@@ -148,3 +149,14 @@ disp_char:
 	pop eax
 	pop ebp
 	ret
+
+pprint:
+	push eax
+	push edx
+	mov eax, [esp + 16]
+	mov edx, [esp + 12]
+	mov byte [gs:eax], dl
+	pop edx
+	pop eax
+	ret
+

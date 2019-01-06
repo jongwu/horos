@@ -15,6 +15,8 @@ extern void (*cmd_fun_table[10])(void *arg);
 extern void print(char *msg, int len);
 void poweroff();
 void help();
+extern void pprint(char,int);
+void snow(char*);
 #define BCD_TO_DEC(val) \
 (((val) & 15)  + ((val) >> 4) * 10)
 
@@ -175,6 +177,7 @@ void cmd_table_init()
 	cmd_table[2]="poweroff";
 	cmd_table[3]="help";
 	cmd_table[4]="time";
+	regist_cmd("snow", snow);
 	for(int i = 0; i < 20; i++)
 	{
 		kd_buf[i] = '\0';
@@ -190,6 +193,16 @@ int str_equal(char *p1, char *p2)
 	}
 	if(*p2)	return 0;
 	return 1;
+}
+
+void regist_cmd(char *name, void *func)
+{
+       if(name == NULL || func == NULL)
+               return;
+
+       cmd_fun_table[CMD_NUM] = func;
+       cmd_table[CMD_NUM] = name;
+       CMD_NUM++;
 }
 
 int leng(char *msg)
@@ -209,3 +222,27 @@ void help()
 		disp_str(", ");
 	}
 }
+
+void sleep(int t)
+{
+       while(t--)
+       {
+               int i = 100000;
+               while(i--);
+       }
+}
+
+void snow(char *p)
+{
+       int i = 4000, k = 2;
+       char ch = *p;
+       while(i--)
+       {
+               k = (k + 3) * 2;
+               k %= 4000;
+               pprint(ch, k);
+               sleep(2);
+               pprint(' ', k);
+       }       
+}
+
