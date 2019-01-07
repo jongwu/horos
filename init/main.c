@@ -23,11 +23,7 @@ int main()
 	start_paging();
 	init_global(); 
 	cmd_table_init();
-//	disp_int(CMOS_READ(0));
-//	thread_start(dispA, NULL); 
-//	thread_start(dispB, NULL);
 	sti();
-//	time();
 	do_shell();
 /*	char *str="Hello, my friend. This is horos.\n";
 	disp_str(str);

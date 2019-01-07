@@ -166,17 +166,11 @@ void time()
 
 void cmd_table_init()
 {
-	CMD_NUM = 5;
-	cmd_fun_table[0] = echo;
-	cmd_fun_table[1] = clear;
-	cmd_fun_table[2] = poweroff;
-	cmd_fun_table[3] = help;
-	cmd_fun_table[4] = time;
-	cmd_table[0]="echo";
-	cmd_table[1]="clear";
-	cmd_table[2]="poweroff";
-	cmd_table[3]="help";
-	cmd_table[4]="time";
+	CMD_NUM = 0;
+	regist_cmd("echo", echo);
+	regist_cmd("clear", clear);
+	regist_cmd("poweroff", poweroff);
+	regist_cmd("time", time);
 	regist_cmd("snow", snow);
 	for(int i = 0; i < 20; i++)
 	{

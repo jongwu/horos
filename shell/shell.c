@@ -3,7 +3,7 @@ int cmd_open;
 void *cmd_arg_table[10];
 void do_shell()
 {
-	disp_str("welcomm to horos shell\n");
+	disp_str("welcome to horos shell\n");
 	disp_str("command list:  ");
 	for(int i = 0; i < CMD_NUM; i++)
 	{
@@ -12,7 +12,7 @@ void do_shell()
 	}
 	cmd_open = 1;
 	int k = 0;
-//	disp_str(kd_buf);
+	disp_str(kd_buf);
 	disp_str("\n$ ");
 	while(1)
 	{

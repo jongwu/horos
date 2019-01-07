@@ -23,6 +23,16 @@ global pprint
 ; ========================================================================
 ;                  void disp_str(char * info);
 ; ========================================================================
+disp_str1:
+	push ebp
+	mov	ebp, esp
+
+	mov	esi, [ebp + 8]
+.1:
+	mov	edi, [esi]
+	cmp	edi, 0
+	ret
+	
 disp_str:
 	push	ebp
 	mov	ebp, esp
@@ -42,6 +52,7 @@ disp_str:
 	cmp	al, 0Ah	; 是回车吗?
 	jnz	.3
 	push	eax
+	push	ebx
 	mov	eax, edi
 	mov	bl, 160
 	div	bl
@@ -50,6 +61,7 @@ disp_str:
 	mov	bl, 160
 	mul	bl
 	mov	edi, eax
+	pop	ebx
 	pop	eax
 	jmp	.1
 .3:

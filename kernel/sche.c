@@ -29,7 +29,6 @@ void scheduler()
 		return;
 	if(task_number < task_max)
 	{
-		disp_str("* ");
 		next = task_list[(task_number) % task_max];
 		current = next;
 		task_number++;
