@@ -13,9 +13,9 @@ OBJ = init/head.o init/main.o init/idt.o kernel/sche.o kernel/switch.o kernel/dr
 KERNEL = kernel.bin
 INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h  include/sche.h include/driver.h include/page.h
 
-all: boot/boot.bin boot/setup.bin $(KERNEL)
+all: clean boot/boot.bin boot/setup.bin $(KERNEL)
 clean:
-	rm  $(KERNEL) lib/*.o init/*.o kernel/*.o
+	rm  $(KERNEL) */*.o
 
 lib/klib.o: lib/klib.asm $(INCLUDE)
 	$(ASM) $(ASMFLAG) $@ $<

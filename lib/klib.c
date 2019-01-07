@@ -235,7 +235,7 @@ void snow(char *p)
                k = (k + 3) * 2;
                k %= 4000;
                pprint(ch, k);
-               sleep(2);
+               sleep(18);
                pprint(' ', k);
        }       
 }
