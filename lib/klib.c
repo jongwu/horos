@@ -172,6 +172,7 @@ void cmd_table_init()
 	regist_cmd("poweroff", poweroff);
 	regist_cmd("time", time);
 	regist_cmd("snow", snow);
+	regist_cmd("help", help);
 	for(int i = 0; i < 20; i++)
 	{
 		kd_buf[i] = '\0';
