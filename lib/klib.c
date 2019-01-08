@@ -221,22 +221,27 @@ void sleep(int t)
 {
        while(t--)
        {
-               int i = 100000;
+               int i = 1000000;
                while(i--);
        }
 }
 
 void snow(char *p)
 {
-       int i = 4000, k = 2;
+       int i = 1000, k = 2, ka[100];
        char ch = *p;
        while(i--)
        {
                k = (k + 3) * 2;
                k %= 4000;
-               pprint(ch, k);
+		ka[(i+1)%10] = k;
+               pprint(ch, ka[(i+1)%10]);
                sleep(18);
-               pprint(' ', k);
+               pprint(' ', ka[(i)%10]);
        }       
+	while(i<10)
+	{
+		pprint(' ', ka[i++]);
+	}
 }
 

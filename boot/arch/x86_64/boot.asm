@@ -42,7 +42,7 @@ setup:   call read_hard_disk_0
 	 mov ebx, edi
 	 mov ebp, head_segment_address
 	 mov ds, ebp
-	 mov ecx, 80
+	 mov ecx, 60
 read_head:
 	 call read_hard_disk_0
 	 inc eax

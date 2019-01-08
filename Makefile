@@ -13,7 +13,7 @@ OBJ = init/head.o init/main.o init/idt.o kernel/sche.o kernel/switch.o kernel/dr
 KERNEL = kernel.bin
 INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h  include/sche.h include/driver.h include/page.h
 
-all: clean boot/boot.bin boot/setup.bin $(KERNEL)
+all: boot/boot.bin boot/setup.bin $(KERNEL)
 clean:
 	rm  $(KERNEL) */*.o
 
