@@ -9,14 +9,14 @@ unsigned char page_map[4096];
  */
 void init_mem()
 {
-	/* kernel reserved memory lower than 1M */
-	for(int i = 0; i < 256; i++)
+	/* kernel reserved memory lower than 4M */
+	for(int i = 0; i < 1024; i++)
 	{
 		page_map[i] = 100;
 	}
 
-	/* user can use memory higher than 1M */
-	for(int i = 256; i < 4096; i++)
+	/* user can use memory higher than 4M */
+	for(int i = 1024; i < 4096; i++)
 	{
 		page_map[i] = 0;
 	}
@@ -24,7 +24,7 @@ void init_mem()
 
 void *get_free_page()
 {
-	for (int i = 256; i < 4096; i++)
+	for (int i = 1024; i < 4096; i++)
 	{
 		if(page_map[i] == 0)
 		{

@@ -46,98 +46,23 @@ global  hwint12
 global  hwint13
 global  hwint14
 global  hwint15
-extern idt
 global set_idtr
 global int_n
 global sti
+extern idt
 start:
-;	mov ebx, idt
-;	call init_idt
-;	lidt [idtr]
-;	call setup_pde
-;	call start_paging
-;	sti
-;	call start_paging
 	sub esp, 4096
 	mov [current], esp
 	jmp main
 	jmp $
 
-setup_idt:
-	mov eax, 0x8e00
-	mov edx, 0x00300000
-;	mov edi, isr-head_base_addr
-	mov dx,  di
-;	mov ecx, 255
-	ret
-
-write_idt:
-	mov dword [ebx], edx
-	mov dword [ebx+4], eax
-	add ebx, 8
-;	loop write_idt
-	ret
-	
-;idt:
-;	times 512 dd 0
-
 idtr:
-	dw 512*4-1
-	dd idt
+        dw 512*4-1
+        dd idt
 set_idtr:
-	lidt [idtr]
-	ret
+        lidt [idtr]
+        ret
 
-int_n:
-	int 32
-	ret
-;we just set 1M page memory for kernel
-setup_pde:
-	mov eax, pte_base_addr
-	add eax, 0x113
-	mov ecx, 1
-	mov edx, 0
-.l1	mov [pde_base_addr+edx], eax
-	call setup_pte
-	add eax, 4*1024
-	add edx, 4
-	loop .l1
-	ret
-
-setup_pte:
-	push eax
-	push ecx
-	push edx
-	push edi
-	mov eax, 0
-	add eax, 0x113
-	mov ecx, 255
-	mov ebx, 0
-.l2	mov edi, edx
-	shl edi, 10
-	mov [pte_base_addr+ebx+edi], eax
-	add eax, 4*1024
-	add ebx, 4
-	loop .l2
-	pop edi
-	pop edx
-	pop ecx
-	pop eax
-	ret
-
-;start_paging:
-	push eax
-	push ebx
-	mov eax, pde_base_addr
-	mov cr3, eax
-	mov eax, cr0
-	mov ebx, 1
-	shl ebx, 31
-	or  eax, ebx
-	mov cr0, eax
-	pop ebx
-	pop eax
-	ret
 
 isr:
 	mov eax, 0x20
@@ -149,18 +74,6 @@ s:
 	add ebx, 2
 	loop s
 	jmp $
-
-isr_:
-	mov eax, 0x20
-	mov gs, eax
-	mov ecx, 400
-	mov ebx, 0
-s1:
-	mov byte [gs:ebx], '+'
-	add ebx, 2
-	loop s1
-	jmp $
-
 print:
 	mov eax, 0x20
         mov gs, eax
@@ -177,134 +90,6 @@ l1:
         inc edi
         loop l1
 	ret
-
-
-init_idt:
-	mov edi, divide_error-head_base_addr
-	call setup_idt
-	call write_idt
-	
-	mov edi, single_step_exception-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, nmi-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, breakpoint_exception-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, overflow-head_base_addr
-	call setup_idt
-	call write_idt
-	
-	mov edi, bounds_check-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, inval_opcode-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, copr_seg_overrun-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, inval_tss-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, double_fault-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, segment_not_present-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, stack_exception-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, general_protection-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, page_fault-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, copr_error-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint00-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint01-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint02-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint03-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint04-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint05-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint06-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint07-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint08-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint09-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint10-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint11-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint12-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint13-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint14-head_base_addr
-	call setup_idt
-	call write_idt
-
-	mov edi, hwint15-head_base_addr
-	call setup_idt
-	call write_idt
-	ret
-
 
 %macro	hwint_master	1
 	push	%1
@@ -485,39 +270,17 @@ exception:
 syscall_handler:
 	iret
 
-;exception_handler:
-;	push ebp
-;	push eax
-;	mov ebp, esp
-;	mov eax, [ebp + 12]
-;	add eax, 65
-;	mov byte [gs:0], al
-;	pop eax
-;	pop ebp
-;	ret
-
 sti:
 	sti
 	ret
-
 wait_:
-	push ecx
-	push eax
-	mov ecx, 10000000
+        push ecx
+        push eax
+        mov ecx, 10000000
 .s2
-	inc eax
-	loop .s2
-	pop eax
-	pop ecx
-	ret
-
-waitl:
-	push ecx
-	mov ecx, 100000000
-.s3
-	call wait_
-	loop .s3
-	pop ecx
-	ret
-
+        inc eax
+        loop .s2
+        pop eax
+        pop ecx
+        ret
 
