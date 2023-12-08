@@ -15,7 +15,7 @@ INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/
 
 all: boot/boot.bin boot/setup.bin $(KERNEL)
 clean:
-	rm  $(KERNEL) */*.o
+	rm  $(KERNEL) */*.o boot/*.bin
 
 lib/klib.o: lib/klib.asm $(INCLUDE)
 	$(ASM) $(ASMFLAG) $@ $<
