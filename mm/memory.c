@@ -7,7 +7,7 @@ unsigned char page_map[4096];
  * assume we have 16M memory
  * the contain of the set represents reference times
  */
-void init_mem()
+void init_mem(void)
 {
 	/* kernel reserved memory lower than 4M */
 	for(int i = 0; i < 1024; i++)
@@ -22,7 +22,7 @@ void init_mem()
 	}
 }
 
-void *get_free_page()
+void *get_free_page(void)
 {
 	for (int i = 1024; i < 4096; i++)
 	{
@@ -33,6 +33,8 @@ void *get_free_page()
 			return (void *)i;
 		}
 	}
+
+	return NULL;
 }
 
 void free_page(unsigned int addr)

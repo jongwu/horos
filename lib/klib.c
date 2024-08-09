@@ -13,14 +13,25 @@
 #include "lib.h"
 extern void (*cmd_fun_table[10])(void *arg);
 extern void print(char *msg, int len);
-void poweroff();
-void help();
+void poweroff(void);
+void help(void);
 extern void pprint(char,int);
 void snow(char*);
+void sleep(int t);
+void help(void);
+void regist_cmd(char *name, void *func);
+void time(void);
+void poweroff(void);
+void clear(void);
+void echo(char *buf);
+PUBLIC char * itoa(char * str, int num);
+void init_disp_pos(void);
+char * itoa1(char * str, int num);
+extern int disp_pos;
 #define BCD_TO_DEC(val) \
 (((val) & 15)  + ((val) >> 4) * 10)
 
-typedef struct time_val{
+struct time_val{
 	int sec;
 	int min;
 	int hour;
@@ -32,7 +43,7 @@ typedef struct time_val{
 /*======================================================================*
                                itoa
  *======================================================================*/
-char * itoa1(char * str, int num)/* Êý×ÖÇ°ÃæµÄ 0 ²»±»ÏÔÊ¾³öÀ´, ±ÈÈç 0000B800 ±»ÏÔÊ¾³É B800 */
+char * itoa1(char * str, int num)
 {
         char *  p = str;
         int     i=0;
@@ -65,17 +76,17 @@ char * itoa1(char * str, int num)/* Êý×ÖÇ°ÃæµÄ 0 ²»±»ÏÔÊ¾³öÀ´, ±ÈÈç 0000B800 ±»Ï
 	itoa(output, input);
 	disp_str(output);
 }*/
-void init_disp_pos()
+void init_disp_pos(void)
 {
 	disp_pos=0;
 }
 
-PUBLIC char * itoa(char * str, int num)/* Êý×ÖÇ°ÃæµÄ 0 ²»±»ÏÔÊ¾³öÀ´, ±ÈÈç 0000B800 ±»ÏÔÊ¾³É B800 */
+PUBLIC char * itoa(char * str, int num)
 {
         char *  p = str;
         char    ch;
         int     i;
-        t_bool  flag = FALSE;
+        bool  flag = FALSE;
 
         *p++ = '0';
         *p++ = 'x';
@@ -103,9 +114,9 @@ PUBLIC char * itoa(char * str, int num)/* Êý×ÖÇ°ÃæµÄ 0 ²»±»ÏÔÊ¾³öÀ´, ±ÈÈç 0000B8
 }
 void disp_int(int input)
 {
-	char* output;
-	itoa1(output, input);
-	disp_str(output); 
+	char output;
+	itoa1(&output, input);
+	disp_str(&output); 
 }
 
 void echo(char *buf)
@@ -113,7 +124,7 @@ void echo(char *buf)
 	disp_str(buf);
 }
 
-void clear()
+void clear(void)
 {
 	init_disp_pos();
 	int i = 2000;
@@ -123,14 +134,14 @@ void clear()
 	
 }
 
-void poweroff()
+void poweroff(void)
 {
 	disp_str("\nI will sleep and never wake up\nsee you next time \n");
 	__asm__ ("cli");
 	__asm__ ("hlt");
 }
 
-void time()
+void time(void)
 {
 	struct time_val t;
 	t.sec = CMOS_READ(0);
@@ -164,7 +175,7 @@ void time()
 
 }
 
-void cmd_table_init()
+void cmd_table_init(void)
 {
 	CMD_NUM = 0;
 	regist_cmd("echo", echo);
@@ -209,7 +220,7 @@ int leng(char *msg)
         return len;
 }
 
-void help()
+void help(void)
 {
 	for(int i = 0; i < CMD_NUM; i++)
 	{

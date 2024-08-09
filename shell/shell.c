@@ -1,7 +1,13 @@
 #include "lib.h"
+#include "sche.h"
+
 int cmd_open;
-void *cmd_arg_table[10];
-void do_shell()
+extern void *cmd_arg_table[10];
+void shell_disp(char str[]);
+int parse_cmd(char *buf, char *cmd, char *arg);
+void do_shell(void);
+
+void do_shell(void)
 {
 	disp_str("welcome to horos shell\n");
 	disp_str("command list:  ");
@@ -11,7 +17,6 @@ void do_shell()
 		disp_str(", ");
 	}
 	cmd_open = 1;
-	int k = 0;
 	disp_str(kd_buf);
 	disp_str("\n$ ");
 	while(1)
@@ -26,16 +31,15 @@ void do_shell()
 				kd_buf[0] = '\0';
 				continue;
 			}	
-			char *arg, *cmd;
+			char arg, cmd;
 			int i;
-			k = 0;
 			kd_buf[p_kd_buf - 1] = '\0';
-			parse_cmd(kd_buf, cmd, arg);
+			parse_cmd(kd_buf, &cmd, &arg);
 			for(i =0 ; i<CMD_NUM; i++)
 			{
-				if(str_equal(cmd_table[i], cmd))
+				if(str_equal(cmd_table[i], &cmd))
 				{
-					thread_function(cmd_fun_table[i], arg);
+					thread_function(cmd_fun_table[i], &arg);
 					if(!str_equal(cmd_table[i],"clear"))
 						disp_str("\n$ ");
 					p_kd_buf = 0;
@@ -44,7 +48,7 @@ void do_shell()
 			}
 			p_kd_buf = 0;
 			if(i < CMD_NUM)continue;
-			shell_disp(cmd);
+			shell_disp(&cmd);
 			disp_str(": command not found \n$ ");
 		}
 	}
@@ -72,7 +76,7 @@ int parse_cmd(char *buf, char *cmd, char *arg)
 	return 1;
 }
 
-void shell_disp(char *str)
+void shell_disp(char str[])
 {
 	disp_str(str);
 }

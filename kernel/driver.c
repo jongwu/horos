@@ -8,6 +8,7 @@ void (*cmd_fun_table[10])(void *arg);
 void *cmd_arg_table[10];
 int CMD_NUM = 10;
 int p_kd_buf;
+int disp_pos;
 void keyboard(int k)
 {
 	if(k > 57)return;
@@ -75,7 +76,7 @@ key[57]=' ';
 	*p=key[k];
 	if(cmd_open)
 	{
-		void *arg;
+//		void *arg;
 			*(kd_buf + p_kd_buf) = key[k];
 //			*(kd_buf + p_kd_buf + 1) = 0;
 		

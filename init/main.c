@@ -6,12 +6,14 @@
 #include "sche.h"
 extern void print(char *msg, int len);
 extern struct task* task_list[20];
-void wait();
+void wait(void);
 void disp_int(int input);
 extern int task_number;
 extern int task_max;
-void time();
-int main()
+extern unsigned int idt[512];
+void time(void);
+void clear_disp(void);
+int main(void)
 {
 	clear_disp();
 	init_idt();
@@ -34,7 +36,7 @@ void spurious_irq(int irq)
         disp_str("\n");
 }
 
-void clear_disp()
+void clear_disp(void)
 {
         char *str="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ";
         int len=leng(str);

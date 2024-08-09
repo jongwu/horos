@@ -3,13 +3,16 @@
 #include "type.h"
 #include "global.h"
 #include "page.h"
-void dispA();
-void dispB();
-static void init_task();
-void ret_from_intr();
+//void dispA();
+//void dispB();
+//static void init_task();
+void ret_from_intr(void);
+void switch_to(struct task *, struct task *);
 struct task *task_list[20], *current;
 int task_number, task_max;
-void fun();
+void fun(void);
+struct task* running_task(void);
+
 void thread_function(thread_func function, void *arg)
 {
         function(arg);
@@ -22,7 +25,7 @@ struct task* running_task()
 	return (struct task *) (esp & 0xfffff000);
 }
 
-void scheduler()
+void scheduler(void)
 {
 	struct task *cur=current, *next;
 	if(task_max < 2)
@@ -41,7 +44,8 @@ void scheduler()
 
 void init_thread(struct task *thread, int proi)
 {
-	memset(thread, 0, 4096);
+	(void)proi;
+	memset((char *)thread, 0, 4096);
 	int tmp = (int)thread + PAGE_SIZE;
 	thread->t_stack = (void *)tmp;
 }
@@ -55,7 +59,7 @@ void thread_create(struct task *thread, thread_func function, void *arg)
 //	thread->t_stack->eip = fun;
 	thread->t_stack->func = function;
 	thread->t_stack->func_arg = arg;
-	thread->t_stack->unused = '&';
+//	thread->t_stack->unused = '&';
 	thread->t_stack->ebp = 'a';
 	thread->t_stack->ebx = 'b';
 	thread->t_stack->ebi = 'c';
@@ -65,7 +69,7 @@ void thread_create(struct task *thread, thread_func function, void *arg)
 
 void thread_start(thread_func function, void *arg)
 {
-	int *p = get_free_page();
+//	int *p = get_free_page();
 	struct task *thread = get_free_page();
 	
 	thread->proi = 0;

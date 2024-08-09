@@ -3,6 +3,7 @@
 char key[60]={' '};
 
 void key_board(char);
+void keyboard(int k);
 
 
 

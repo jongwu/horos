@@ -5,17 +5,17 @@ ASM = nasm
 ASMOFLAG = -I include -o
 ASMFLAG = -f elf32 -I include -o
 CC = gcc
-CFLAG = -m32 -Wall  -fno-stack-protector -fno-omit-frame-pointer -fno-tree-sra -Wextra -mno-red-zone -fno-reorder-blocks -fno-asynchronous-unwind-tables  -I include -c -fno-builtin -Wstrict-prototypes -Wmissing-prototypes -o
+CFLAG = -m32 -Wall -nostdinc -fno-stack-protector -fno-omit-frame-pointer -fno-tree-sra -Wextra -mno-red-zone -fno-reorder-blocks -fno-asynchronous-unwind-tables  -I include -c -fno-builtin -Wstrict-prototypes -Wmissing-prototypes -o
 #CFLAG = -m32 -I include -c -o
 LD = gcc
-LDFLAG = -nostdinc -nostdlib -Wl,--omagic -Wl,--build-id=none -Wl,--gc-sections -Ttext $(ENTRYOFFSET) -e $(ENTRYPOINT) -Wl,-m,elf_i386
+LDFLAG = -nostdinc -nostdlib -Wl,--no-dynamic-linker -Wl,--omagic -Wl,--build-id=none -Wl,--gc-sections -Ttext $(ENTRYOFFSET) -e $(ENTRYPOINT) -Wl,-m,elf_i386
 OBJ = init/head.o init/main.o init/idt.o kernel/sche.o kernel/switch.o kernel/driver.o mm/page.o mm/memory.o lib/klib.o lib/klibc.o shell/shell.o
 KERNEL = kernel.bin
 INCLUDE = include/const.h include/global.h include/lib.h include/type.h include/protect.h include/proto.h  include/sche.h include/driver.h include/page.h
 
 all: boot/boot.bin boot/setup.bin $(KERNEL)
 clean:
-	rm  $(KERNEL) */*.o boot/*.bin
+	rm -f $(KERNEL) */*.o boot/*.bin c.img
 
 lib/klib.o: lib/klib.asm $(INCLUDE)
 	$(ASM) $(ASMFLAG) $@ $<

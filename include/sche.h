@@ -4,17 +4,18 @@
 
 #define PAGE_SIZE 0x1000
 
-long long heartbeat;
 typedef void thread_func(void*);
+void thread_function(thread_func function, void *arg);
+void init_global(void);
 
 struct thread_stack{
         u32 ebp;
         u32 ebx;
         u32 ebi;
         u32 esi;
-	void (*ret)();
+	void (*ret)(void);
         void (*eip)(thread_func* func, void* func_arg);
-	void (*unused)();
+	void (*unused)(void);
         thread_func *func;
         void *func_arg;
 };
@@ -36,7 +37,7 @@ struct task {
         u32 magic;
 };
 
-void scheduler();
+void scheduler(void);
 void thread_create(struct task *thread, thread_func function, void *arg);
 void thread_start(thread_func function, void *arg);
 void init_thread(struct task *thread, int proi);
